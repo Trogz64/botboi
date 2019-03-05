@@ -1,0 +1,1 @@
+Discord bot that goes by the name BotBoi. Don't hurt his feelings!
