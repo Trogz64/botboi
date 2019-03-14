@@ -67,7 +67,7 @@ async def on_message(message):
                 badFile = open("BotBoiFiles/badFile.txt", "r")
                 badCount = int(badFile.read())
                 percent = (goodCount / (float(goodCount + badCount))) * 100
-                msgReturn = "The results show that I am " + str(percent) + "% good!"
+                msgReturn = "The results show that I am " + str(round(percent, 2)) + "% good!"
                 if "NUMBERS" in message.content.upper():
                         msgReturn += "\nGood votes: " + str(goodCount) + "\nBad votes: " + str(badCount)
                 
@@ -81,7 +81,6 @@ async def on_message(message):
                 msg = "Happy Birthday"
                 mentionList = message.mentions
                 for x in range(len(mentionList)):
-                        #msg += "@" + str(mentionList[x]) + " "
                         msg += " " + mentionList[x].mention
                 msg += "!\nhttp://i.imgur.com/P1vH64S.gif"
                 await client.send_message(message.channel, msg)
