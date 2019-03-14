@@ -80,7 +80,7 @@ async def on_message(message):
         if message.content.startswith("~birthday"):
                 msg = "Happy Birthday "
                 mentionList = message.mentions
-                for x in mentionList:
+                for x in range(len(mentionList)):
                         msg += mentionList[x] + " "
                 msg += "\nhttp://i.imgur.com/P1vH64S.gif"
                 await client.send_message(message.channel, msg)
