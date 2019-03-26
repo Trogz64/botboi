@@ -31,8 +31,8 @@ To get the bot working you must create a config.json file in root directory with
 * ~wednesday
 * ~goodbot
 * ~badbot
-* ~evaluate
-* ~evaluate numbers
+* ~evaluate [numbers]
+* ~birthday [@mention/multiple @mentions]
 
 #### Other
 * BotBoi will reply with emotes or messages to certain words or phrases when used in a message
