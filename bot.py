@@ -1,11 +1,16 @@
 import discord
 from discord.ext import commands
 from discord.ext.commands import Bot
+import json
 import datetime
 import asyncio
 import logging
 
-TOKEN = "NDE2NDA2NDg3MDI0NDAyNDMy.DuQ1zw.LCfFiK4uneZ6z9Odb3jL4ddGNTw"
+with open('config.json') as config_file:
+        data = json.load(config_file)
+
+# TOKEN = "NDE2NDA2NDg3MDI0NDAyNDMy.DuQ1zw.LCfFiK4uneZ6z9Odb3jL4ddGNTw"
+TOKEN = data["token"]
 
 client = discord.Client()
 
