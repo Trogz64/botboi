@@ -1,2 +1,4 @@
 /config.json
 *.log
+/BotBoiFiles/goodFile.txt
+/BotBoiFiles/badFile.txt
