@@ -105,13 +105,13 @@ async def on_message(message):
         if message.content.startswith("~servercount"):
                 msg = "Currently connected to " + str(len(client.servers)) + " servers!"
                 await client.send_message(message.channel, msg)
-
-                serverNameOut = "Server names:\n\t"
-                serverList = list(client.servers)
-                for x in range(len(serverList)):
-                        serverNameOut += serverList[x-1].name + " - " + serverList[x-1].owner.name + "\n\t"
-
-                await client.send_message(message.channel, serverNameOut)
+                #Only output the names of the server if the correct parameter is passed
+                if "NAME" in message.content.upper():
+                        serverNameOut = "Server names:\n\t"
+                        serverList = list(client.servers)
+                        for x in range(len(serverList)):
+                                serverNameOut += serverList[x-1].name + " - " + serverList[x-1].owner.name + "\n\t"
+                        await client.send_message(message.channel, serverNameOut)
 
 #Wednesday command
         if message.content.startswith("~wednesday"):
@@ -144,8 +144,10 @@ async def on_message(message):
 
 #Help command
         if message.content.startswith("~help"):
-                msg = "~BotBoi Help~\n\nTry the following commands:\n~hellobotboi\n~hellothere\n~heyyy\n~chaostime\n~wednesday\n~goodbot\n~badbot\n~evaluate"
-                await client.send_message(message.channel, msg)
+                em = discord.Embed(title="~BotBoi Help~", description="Try the following commands:\n~hellobotboi\n~hellothere\n~heyyy\n~chaostime\n~wednesday\n~goodbot\n~badbot\n~evaluate [numbers]\n~birthday [@mention/multiple @mentions]\n~servercount", colour=0x800020)
+                # msg = "~BotBoi Help~\n\nTry the following commands:\n~hellobotboi\n~hellothere\n~heyyy\n~chaostime\n~wednesday\n~goodbot\n~badbot\n~evaluate [numbers]\n~birthday [@mention/multiple @mentions]\n~servercount"
+                # await client.send_message(message.channel, msg)
+                await client.send_message(message.channel, embed=em)
 
 #Dad jokes                
         if message.content.startswith("im") or message.content.startswith("Im") or message.content.startswith("IM"):
