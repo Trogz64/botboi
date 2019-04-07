@@ -10,7 +10,7 @@ He doesn't have a whole lot of features or uses...
 
 ## config.json
 
-To get the bot working you must create a config.json file in root directory with your token. Example:
+To create your own version of the bot you must create a config.json file in root directory with your token. Example:
 ```
 {
     "token" : "your token here"
@@ -33,6 +33,7 @@ To get the bot working you must create a config.json file in root directory with
 * ~badbot
 * ~evaluate [numbers]
 * ~birthday [@mention/multiple @mentions]
+* ~servercount
 
 #### Other
 * BotBoi will reply with emotes or messages to certain words or phrases when used in a message
