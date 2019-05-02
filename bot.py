@@ -54,6 +54,7 @@ async def on_message(message):
                 await client.send_message(message.channel, msg)
 
                 #increment the good counter
+                evaluateFilesExist()
                 goodFile = "BotBoiFiles/goodFile.txt"
                 readAndWriteToFile(goodFile)
 
@@ -62,6 +63,7 @@ async def on_message(message):
                 await client.send_message(message.channel, msg)
 
                 #increment the bad counter
+                evaluateFilesExist()
                 badFile = "BotBoiFiles/badFile.txt"
                 readAndWriteToFile(badFile)
 
@@ -215,19 +217,22 @@ def getDayName(dayNumber):
 #make sure that the required text files exist
 def evaluateFilesExist():
         try:
-                createFile = open("BotBoiFiles/goodFile.txt", "x")
+                goodFile = open("BotBoiFiles/goodFile.txt", "r")
+                goodFile.close()
         except:
-                #Good file already exists
-                print("")
+                createGoodFile = open("BotBoiFiles/goodFile.txt", "w")
+                createGoodFile.write("0")
+                createGoodFile.close()
         try:
-                createFile = open("BotBoiFiles/badFile.txt", "x")
+                badFile = open("BotBoiFiles/badFile.txt", "r")
+                badFile.close()
         except:
-                #Bad file already exists
-                print("")
+                createBadFile = open("BotBoiFiles/badFile.txt", "w")
+                createBadFile.write("0")
+                createBadFile.close()
 
 def readAndWriteToFile(myFile):
         try:
-                evaluateFilesExist()
                 readFile = open(myFile, "r")
                 data = int(readFile.read())
                 readFile.close()
