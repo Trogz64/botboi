@@ -216,17 +216,18 @@ def getDayName(dayNumber):
 
 #make sure that the required text files exist
 def evaluateFilesExist():
+        #try to open the file. If it cannot be found then create it
         try:
                 goodFile = open("BotBoiFiles/goodFile.txt", "r")
                 goodFile.close()
-        except:
+        except FileNotFoundError:
                 createGoodFile = open("BotBoiFiles/goodFile.txt", "w")
                 createGoodFile.write("0")
                 createGoodFile.close()
         try:
                 badFile = open("BotBoiFiles/badFile.txt", "r")
                 badFile.close()
-        except:
+        except FileNotFoundError:
                 createBadFile = open("BotBoiFiles/badFile.txt", "w")
                 createBadFile.write("0")
                 createBadFile.close()
