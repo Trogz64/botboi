@@ -66,6 +66,7 @@ async def on_message(message):
                 readAndWriteToFile(badFile)
 
         if message.content.startswith("~evaluate"):
+                evaluateFilesExist()
                 goodFile = open("BotBoiFiles/goodFile.txt", "r")
                 goodCount = int(goodFile.read())
                 badFile = open("BotBoiFiles/badFile.txt", "r")
@@ -211,8 +212,22 @@ def getDayName(dayNumber):
                 }
         return switcher.get(dayNumber, "INVALID DAY")
 
+#make sure that the required text files exist
+def evaluateFilesExist():
+        try:
+                createFile = open("BotBoiFiles/goodFile.txt", "x")
+        except:
+                #Good file already exists
+                print("")
+        try:
+                createFile = open("BotBoiFiles/badFile.txt", "x")
+        except:
+                #Bad file already exists
+                print("")
+
 def readAndWriteToFile(myFile):
         try:
+                evaluateFilesExist()
                 readFile = open(myFile, "r")
                 data = int(readFile.read())
                 readFile.close()
