@@ -114,7 +114,7 @@ async def on_message(message):
                 if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
                         await client.send_message(message.channel, msg)
         
-        if client.user in message.mention:
+        if client.user in message.mentions:
                 await client.add_reaction(message, client.get_emoji(592418801568710657))
 
 #server count command
