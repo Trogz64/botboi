@@ -95,11 +95,11 @@ async def on_message(message):
                 await client.send_message(message.channel, msg)
 
         if message.content.startswith("~roll"):
-                number = message.content.split("d")[1]
+                number = int(message.content.split("d")[1])
                 result = random.randint(1,number)
-                await client.send_message(message.channel, "Rolled a d" + number)
+                await client.send_message(message.channel, "Rolled a d" + str(number))
                 time.sleep(2)
-                await client.send_message(message.channel, "The result is: " + result)
+                await client.send_message(message.channel, "The result is: " + str(result))
 
                 
 
