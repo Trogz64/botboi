@@ -34,6 +34,7 @@ To create your own version of the bot you must create a config.json file in root
 * ~evaluate [numbers]
 * ~birthday [@mention/multiple @mentions]
 * ~servercount
+* ~roll d[Number of faces]
 
 #### Other
 * BotBoi will reply with emotes or messages to certain words or phrases when used in a message
