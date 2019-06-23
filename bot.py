@@ -5,6 +5,8 @@ import json
 import datetime
 import asyncio
 import logging
+import random
+import time
 
 with open('config.json') as config_file:
         data = json.load(config_file)
@@ -91,6 +93,14 @@ async def on_message(message):
                         msg += " " + mentionList[x].mention
                 msg += "!\nhttp://i.imgur.com/P1vH64S.gif"
                 await client.send_message(message.channel, msg)
+
+        if message.content.startswith("~roll"):
+                number = message.content.split("d")[1]
+                result = random.randint(1,number)
+                await client.send_message(message.channel, "Rolled a d" + number)
+                time.sleep(2)
+                await client.send_message(message.channel, "The result is: " + result)
+
                 
 
 #reaction to an @everyone
