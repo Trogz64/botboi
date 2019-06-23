@@ -115,7 +115,7 @@ async def on_message(message):
                         await client.send_message(message.channel, msg)
         
         if client.user in message.mention:
-                await client.add_reaction(message, "wave")
+                await client.add_reaction(message, client.get_emoji(592418801568710657))
 
 #server count command
         if message.content.startswith("~servercount"):
