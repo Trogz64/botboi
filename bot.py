@@ -157,7 +157,7 @@ async def on_message(message):
 
 #Help command
         if message.content.startswith("~help"):
-                em = discord.Embed(title="~BotBoi Help~", description="Try the following commands:\n~hellobotboi\n~hellothere\n~heyyy\n~chaostime\n~wednesday\n~goodbot\n~badbot\n~evaluate [numbers]\n~birthday [@mention/multiple @mentions]\n~servercount", colour=0x800020)
+                em = discord.Embed(title="~BotBoi Help~", description="Try the following commands:\n~hellobotboi\n~hellothere\n~heyyy\n~chaostime\n~wednesday\n~goodbot\n~badbot\n~evaluate [numbers]\n~birthday [@mention/multiple @mentions]\n~servercount\n~roll d[Number of faces]", colour=0x800020)
                 await client.send_message(message.channel, embed=em)
 
 #Dad jokes                
