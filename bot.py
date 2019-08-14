@@ -13,7 +13,7 @@ with open('config.json') as config_file:
 
 TOKEN = data["token"]
 
-COMMAND_CHARACTER = "?"
+COMMAND_CHARACTER = "--"
 
 client = discord.Client()
 
