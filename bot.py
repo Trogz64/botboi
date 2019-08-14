@@ -13,6 +13,8 @@ with open('config.json') as config_file:
 
 TOKEN = data["token"]
 
+COMMAND_CHARACTER = "?"
+
 client = discord.Client()
 
 logger = logging.getLogger("discord")
@@ -27,7 +29,7 @@ async def on_ready():
         print(client.user.name)
         print(client.user.id)
         print("")
-        await client.change_presence(game=discord.Game(name="~help for help"))
+        await client.change_presence(game = discord.Game(name = COMMAND_CHARACTER + "help for help"))
         numberOfServers = len(client.servers)
         print("Connected to " + str(numberOfServers) + " servers")
         print("------\n")
@@ -39,19 +41,19 @@ async def on_message(message):
                 #return
 
 #General commands and reactions
-        if message.content.startswith("~hellobotboi"):
+        if message.content.startswith(COMMAND_CHARACTER + "hellobotboi"):
                 msg = "Hello {0.author.mention}".format(message)
                 await client.send_message(message.channel, msg)
                 
-        if message.content.startswith("~hellothere"):
+        if message.content.startswith(COMMAND_CHARACTER + "hellothere"):
                 msg = "General Kenobi!"
                 await client.send_message(message.channel, msg)
 
-        if message.content.startswith("~heyyy"):
+        if message.content.startswith(COMMAND_CHARACTER + "heyyy"):
                 msg = "Queen Bee"
                 await client.send_message(message.channel, msg)
 
-        if message.content.startswith("~goodbot"):
+        if message.content.startswith(COMMAND_CHARACTER + "goodbot"):
                 msg = ":blush:"
                 await client.send_message(message.channel, msg)
 
@@ -60,7 +62,7 @@ async def on_message(message):
                 goodFile = "BotBoiFiles/goodFile.txt"
                 readAndWriteToFile(goodFile)
 
-        if message.content.startswith("~badbot"):
+        if message.content.startswith(COMMAND_CHARACTER + "badbot"):
                 msg = ":sob:"
                 await client.send_message(message.channel, msg)
 
@@ -69,7 +71,7 @@ async def on_message(message):
                 badFile = "BotBoiFiles/badFile.txt"
                 readAndWriteToFile(badFile)
 
-        if message.content.startswith("~evaluate"):
+        if message.content.startswith(COMMAND_CHARACTER + "evaluate"):
                 evaluateFilesExist()
                 goodFile = open("BotBoiFiles/goodFile.txt", "r")
                 goodCount = int(goodFile.read())
@@ -82,11 +84,11 @@ async def on_message(message):
                 
                 await client.send_message(message.channel, msgReturn)
 
-        if message.content.startswith("~chaostime"):
+        if message.content.startswith(COMMAND_CHARACTER + "chaostime"):
                 msg = "@everyone <:kappa:522893572131913748>"
                 await client.send_message(message.channel, msg)
         
-        if message.content.startswith("~birthday"):
+        if message.content.startswith(COMMAND_CHARACTER + "birthday"):
                 msg = "Happy Birthday"
                 mentionList = message.mentions
                 for x in range(len(mentionList)):
@@ -94,7 +96,7 @@ async def on_message(message):
                 msg += "!\nhttp://i.imgur.com/P1vH64S.gif"
                 await client.send_message(message.channel, msg)
 
-        if message.content.startswith("~roll"):
+        if message.content.startswith(COMMAND_CHARACTER + "roll"):
                 number = int(message.content.split("d")[1])
                 result = random.randint(1,number)
                 await client.send_message(message.channel, "Rolled a d" + str(number) + "...")
@@ -119,7 +121,7 @@ async def on_message(message):
                 await client.add_reaction(message, emoji)
 
 #server count command
-        if message.content.startswith("~servercount"):
+        if message.content.startswith(COMMAND_CHARACTER + "servercount"):
                 msg = "Currently connected to " + str(len(client.servers)) + " servers!"
                 await client.send_message(message.channel, msg)
                 #Only output the names of the server if the correct parameter is passed
@@ -131,7 +133,7 @@ async def on_message(message):
                         await client.send_message(message.channel, serverNameOut)
 
 #Wednesday command
-        if message.content.startswith("~wednesday"):
+        if message.content.startswith(COMMAND_CHARACTER + "wednesday"):
                 weekday = datetime.datetime.today().weekday()
                 if weekday == 2:#monday=0 -> sunday=6
                         await client.send_file(message.channel, "BotBoiFiles/ITSWEDNESDAY.jpg")
@@ -160,8 +162,8 @@ async def on_message(message):
                 await client.send_message(message.channel, msg)
 
 #Help command
-        if message.content.startswith("~help"):
-                em = discord.Embed(title="~BotBoi Help~", description="Try the following commands:\n~hellobotboi\n~hellothere\n~heyyy\n~chaostime\n~wednesday\n~goodbot\n~badbot\n~evaluate [numbers]\n~birthday [@mention/multiple @mentions]\n~servercount\n~roll d[Number of faces]", colour=0x800020)
+        if message.content.startswith(COMMAND_CHARACTER + "help"):
+                em = discord.Embed(title="~BotBoi Help~", description="Try the following commands:\n"+COMMAND_CHARACTER + "hellobotboi\n"+COMMAND_CHARACTER + "hellothere\n"+COMMAND_CHARACTER + "heyyy\n"+COMMAND_CHARACTER + "chaostime\n"+COMMAND_CHARACTER + "wednesday\n"+COMMAND_CHARACTER + "goodbot\n"+COMMAND_CHARACTER + "badbot\n"+COMMAND_CHARACTER + "evaluate [numbers]\n"+COMMAND_CHARACTER + "birthday [@mention/multiple @mentions]\n"+COMMAND_CHARACTER + "servercount\n"+COMMAND_CHARACTER + "roll d[Number of faces]", colour=0x800020)
                 await client.send_message(message.channel, embed=em)
 
 #Dad jokes                

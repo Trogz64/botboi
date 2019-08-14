@@ -19,22 +19,22 @@ To create your own version of the bot you must create a config.json file in root
 ---
 ## Features
 
-* ~help
+* ?help
 
 #### Greetings
-* ~hellobotboi
-* ~hellothere
-* ~heyyy
+* ?hellobotboi
+* ?hellothere
+* ?heyyy
 
 #### Commands
-* ~chaostime
-* ~wednesday
-* ~goodbot
-* ~badbot
-* ~evaluate [numbers]
-* ~birthday [@mention/multiple @mentions]
-* ~servercount
-* ~roll d[Number of faces]
+* ?chaostime
+* ?wednesday
+* ?goodbot
+* ?badbot
+* ?evaluate [numbers]
+* ?birthday [@mention/multiple @mentions]
+* ?servercount
+* ?roll d[Number of faces]
 
 #### Other
 * BotBoi will reply with emotes or messages to certain words or phrases when used in a message
