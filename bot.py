@@ -115,7 +115,8 @@ async def on_message(message):
                                 sent = True
                 if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
                         await client.send_message(message.channel, msg)
-        
+
+#Wave reaction to mention
         if client.user in message.mentions:
                 emoji = "\U0001F44B"
                 await client.add_reaction(message, emoji)
@@ -185,37 +186,109 @@ async def on_message(message):
                 if message.author == client.user:
                         return
                 msg = "<:ootay:456893214880825354>"
-                await client.send_message(message.channel, msg)
+                sent = False
+                for x in client.get_all_emojis():
+                        if x.name == "ootay":        #adds the reaction if the emoji is found
+                                await client.add_reaction(message, x)
+                                sent = True
+                if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
+                        await client.send_message(message.channel, msg)
 
         if "BRAUM" in message.content.upper():
                 if message.author == client.user:
                         return
                 msg = "<:standbehindbraum:457164456846163969>"
-                await client.send_message(message.channel, msg)
+                sent = False
+                for x in client.get_all_emojis():
+                        if x.name == "standbehindbraum":        #adds the reaction if the emoji is found
+                                await client.add_reaction(message, x)
+                                sent = True
+                if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
+                        await client.send_message(message.channel, msg)
 
         if "KOZ" in message.content.upper():
                 if message.author == client.user:
                         return
                 msg = "<:ohdarn:457162626313617438>"
-                await client.send_message(message.channel, msg)
+                sent = False
+                for x in client.get_all_emojis():
+                        if x.name == "ohdarn":        #adds the reaction if the emoji is found
+                                await client.add_reaction(message, x)
+                                sent = True
+                if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
+                        await client.send_message(message.channel, msg)
 
         if "AHRI" in message.content.upper():
                 if message.author == client.user:
                         return
                 msg = "<:ahri:457199789591887872>"
-                await client.send_message(message.channel, msg)
+                sent = False
+                for x in client.get_all_emojis():
+                        if x.name == "ahri":        #adds the reaction if the emoji is found
+                                await client.add_reaction(message, x)
+                                sent = True
+                if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
+                        await client.send_message(message.channel, msg)
 
         if "SWAIN" in message.content.upper():
                 if message.author == client.user:
                         return
                 msg = "<:swain:457212057683492864>"
-                await client.send_message(message.channel, msg)
+                sent = False
+                for x in client.get_all_emojis():
+                        if x.name == "swain":        #adds the reaction if the emoji is found
+                                await client.add_reaction(message, x)
+                                sent = True
+                if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
+                        await client.send_message(message.channel, msg)
 
         if "PYKE" in message.content.upper():
                 if message.author == client.user:
                         return
                 msg = "<:pyke:458619798117548042>"
-                await client.send_message(message.channel, msg)
+                sent = False
+                for x in client.get_all_emojis():
+                        if x.name == "pyke":        #adds the reaction if the emoji is found
+                                await client.add_reaction(message, x)
+                                sent = True
+                if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
+                        await client.send_message(message.channel, msg)
+        
+        if "YORICK" in message.content.upper():
+                if message.author == client.user:
+                        return
+                msg = "<:yorick:619544222068113408>"
+                sent = False
+                for x in client.get_all_emojis():
+                        if x.name == "yorick":        #adds the reaction if the emoji is found
+                                await client.add_reaction(message, x)
+                                sent = True
+                if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
+                        await client.send_message(message.channel, msg)
+
+        if "LUX" in message.content.upper():
+                if message.author == client.user:
+                        return
+                msg = "<:lux:619545161604792320>"
+                sent = False
+                for x in client.get_all_emojis():
+                        if x.name == "lux":        #adds the reaction if the emoji is found
+                                await client.add_reaction(message, x)
+                                sent = True
+                if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
+                        await client.send_message(message.channel, msg)
+        
+        if "NAMI" in message.content.upper():
+                if message.author == client.user:
+                        return
+                msg = "<:nami:619545130566811661>"
+                sent = False
+                for x in client.get_all_emojis():
+                        if x.name == "nami":        #adds the reaction if the emoji is found
+                                await client.add_reaction(message, x)
+                                sent = True
+                if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
+                        await client.send_message(message.channel, msg)
 
 #this is as close to a switch statement in python as possible. this uses dictionary mapping to return the name of the day from the number given by the date/time format
 def getDayName(dayNumber):
