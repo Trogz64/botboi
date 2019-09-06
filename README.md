@@ -11,22 +11,29 @@ He doesn't have a whole lot of features or uses...
 ## config.json
 
 To create your own version of the bot you must create a config.json file in root directory with your token. Example:
-```
+
+```json
+
 {
     "token" : "your token here"
 }
+
 ```
+
 ---
+
 ## Features
 
 * --help
 
 #### Greetings
+
 * --hellobotboi
 * --hellothere
 * --heyyy
 
 #### Commands
+
 * --chaostime
 * --wednesday
 * --goodbot
@@ -37,4 +44,5 @@ To create your own version of the bot you must create a config.json file in root
 * --roll d[Number of faces]
 
 #### Other
+
 * BotBoi will reply with emotes or messages to certain words or phrases when used in a message
