@@ -164,16 +164,15 @@ async def on_message(message):
                 msg = "lmao"
                 await client.send_message(message.channel, msg)
 
-#Dad jokes
-        if message.content.startswith("im") or message.content.startswith("Im") or message.content.startswith("IM"):
-                if message.content.split() == 2:
+#Dad joke
+        if len(message.content.split().size()) == 2:
+                if message.content.startswith("im") or message.content.startswith("Im") or message.content.startswith("IM"):
                         messageLength = len(message.content)
                         returnMessage = message.content[3:messageLength]
                         msg = "Hello " + returnMessage + ", I'm dad!"
                         await client.send_message(message.channel, msg)
 
-        if message.content.startswith("i'm") or message.content.startswith("I'm") or message.content.startswith("I'M"):
-                if message.content.split() == 2:
+                if message.content.startswith("i'm") or message.content.startswith("I'm") or message.content.startswith("I'M"):
                         messageLength = len(message.content)
                         returnMessage = message.content[4:messageLength]
                         msg = "Hello " + returnMessage + ", I'm dad!"
