@@ -165,7 +165,7 @@ async def on_message(message):
                 await client.send_message(message.channel, msg)
 
 #Dad joke
-        if len(message.content.split().size()) == 2:
+        if len(message.content.split()) == 2:
                 if message.content.startswith("im") or message.content.startswith("Im") or message.content.startswith("IM"):
                         messageLength = len(message.content)
                         returnMessage = message.content[3:messageLength]
