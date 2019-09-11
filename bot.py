@@ -36,11 +36,16 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-        #this stops the bot from reacting to itself
+        #uncomment to stop the bot from reacting to itself
         # if message.author == client.user:
         #         return
 
-#General commands and reactions
+#Help command
+        if message.content.startswith(COMMAND_CHARACTER + "help"):
+                em = discord.Embed(title="~BotBoi Help~", description="Try the following commands:\n"+COMMAND_CHARACTER + "hellobotboi\n"+COMMAND_CHARACTER + "hellothere\n"+COMMAND_CHARACTER + "heyyy\n"+COMMAND_CHARACTER + "chaostime\n"+COMMAND_CHARACTER + "wednesday\n"+COMMAND_CHARACTER + "goodbot\n"+COMMAND_CHARACTER + "badbot\n"+COMMAND_CHARACTER + "evaluate [numbers]\n"+COMMAND_CHARACTER + "birthday [@mention/multiple @mentions]\n"+COMMAND_CHARACTER + "servercount\n"+COMMAND_CHARACTER + "roll d[Number of faces]", colour=0x800020)
+                await client.send_message(message.channel, embed=em)
+
+#General commands
         if message.content.startswith(COMMAND_CHARACTER + "hellobotboi"):
                 msg = "Hello {0.author.mention}".format(message)
                 await client.send_message(message.channel, msg)
@@ -52,6 +57,17 @@ async def on_message(message):
         if message.content.startswith(COMMAND_CHARACTER + "heyyy"):
                 msg = "Queen Bee"
                 await client.send_message(message.channel, msg)
+
+        if message.content.startswith(COMMAND_CHARACTER + "chaostime"):
+                msg = "@everyone <:kappa:522893572131913748>"
+                await client.send_message(message.channel, msg)
+        
+        if message.content.startswith(COMMAND_CHARACTER + "wednesday"):
+                weekday = datetime.datetime.today().weekday()
+                if weekday == 2:#monday=0 -> sunday=6
+                        await client.send_file(message.channel, "BotBoiFiles/ITSWEDNESDAY.jpg")
+                else:
+                        await client.send_message(message.channel, "It is not Wednesday...\nIt is " + getDayName(weekday) + " my dudes!")
 
         if message.content.startswith(COMMAND_CHARACTER + "goodbot"):
                 msg = ":blush:"
@@ -84,10 +100,6 @@ async def on_message(message):
                 
                 await client.send_message(message.channel, msgReturn)
 
-        if message.content.startswith(COMMAND_CHARACTER + "chaostime"):
-                msg = "@everyone <:kappa:522893572131913748>"
-                await client.send_message(message.channel, msg)
-        
         if message.content.startswith(COMMAND_CHARACTER + "birthday"):
                 msg = "Happy Birthday"
                 mentionList = message.mentions
@@ -95,6 +107,17 @@ async def on_message(message):
                         msg += " " + mentionList[x].mention
                 msg += "!\nhttp://i.imgur.com/P1vH64S.gif"
                 await client.send_message(message.channel, msg)
+
+        if message.content.startswith(COMMAND_CHARACTER + "servercount"):
+                msg = "Currently connected to " + str(len(client.servers)) + " servers!"
+                await client.send_message(message.channel, msg)
+                #Only output the names of the server if the correct parameter is passed
+                if "NAME" in message.content.upper():
+                        serverNameOut = "Server names:\n\t"
+                        serverList = list(client.servers)
+                        for x in range(len(serverList)):
+                                serverNameOut += serverList[x-1].name + " - " + serverList[x-1].owner.name + "\n\t"
+                        await client.send_message(message.channel, serverNameOut)
 
         if message.content.startswith(COMMAND_CHARACTER + "roll"):
                 number = int(message.content.split("d")[1])
@@ -119,26 +142,7 @@ async def on_message(message):
                 emoji = "\U0001F44B"
                 await client.add_reaction(message, emoji)
 
-#server count command
-        if message.content.startswith(COMMAND_CHARACTER + "servercount"):
-                msg = "Currently connected to " + str(len(client.servers)) + " servers!"
-                await client.send_message(message.channel, msg)
-                #Only output the names of the server if the correct parameter is passed
-                if "NAME" in message.content.upper():
-                        serverNameOut = "Server names:\n\t"
-                        serverList = list(client.servers)
-                        for x in range(len(serverList)):
-                                serverNameOut += serverList[x-1].name + " - " + serverList[x-1].owner.name + "\n\t"
-                        await client.send_message(message.channel, serverNameOut)
-
-#Wednesday command
-        if message.content.startswith(COMMAND_CHARACTER + "wednesday"):
-                weekday = datetime.datetime.today().weekday()
-                if weekday == 2:#monday=0 -> sunday=6
-                        await client.send_file(message.channel, "BotBoiFiles/ITSWEDNESDAY.jpg")
-                else:
-                        await client.send_message(message.channel, "It is not Wednesday...\nIt is " + getDayName(weekday) + " my dudes!")
-
+#Special reactions
         if "SLUT" in message.content.upper():
                 if message.author == client.user:
                         return
@@ -160,12 +164,7 @@ async def on_message(message):
                 msg = "lmao"
                 await client.send_message(message.channel, msg)
 
-#Help command
-        if message.content.startswith(COMMAND_CHARACTER + "help"):
-                em = discord.Embed(title="~BotBoi Help~", description="Try the following commands:\n"+COMMAND_CHARACTER + "hellobotboi\n"+COMMAND_CHARACTER + "hellothere\n"+COMMAND_CHARACTER + "heyyy\n"+COMMAND_CHARACTER + "chaostime\n"+COMMAND_CHARACTER + "wednesday\n"+COMMAND_CHARACTER + "goodbot\n"+COMMAND_CHARACTER + "badbot\n"+COMMAND_CHARACTER + "evaluate [numbers]\n"+COMMAND_CHARACTER + "birthday [@mention/multiple @mentions]\n"+COMMAND_CHARACTER + "servercount\n"+COMMAND_CHARACTER + "roll d[Number of faces]", colour=0x800020)
-                await client.send_message(message.channel, embed=em)
-
-# #Dad jokes                
+#Dad jokes
 #         if message.content.startswith("im") or message.content.startswith("Im") or message.content.startswith("IM"):
 #                 messageLength = len(message.content)
 #                 returnMessage = message.content[3:messageLength]
@@ -300,8 +299,10 @@ def getDayName(dayNumber):
                 }
         return switcher.get(dayNumber, "INVALID DAY")
 
-#make sure that the required text files exist
+#Methods
+
 def evaluateFilesExist():
+        #make sure that the required text files exist
         #try to open the file. If it cannot be found then create it
         try:
                 goodFile = open("BotBoiFiles/goodFile.txt", "r")
@@ -329,17 +330,18 @@ def readAndWriteToFile(myFile):
                 writeFile.close()
         except:
                 print("File read/write error")
-##async def Wednesday():
-##        await client.wait_until_ready()
-##        while not client.is_closed:
-##                weekday = datetime.datetime.today().weekday()
-##                if weekday == 2:#monday=0 -> sunday=6
-##                        #channel = client.get_channel("295972677276139520")#modchat
-##                        channel = client.get_channel("135744167811874816")#allchat
-##                        await client.send_file(channel, "ITSWEDNESDAY.jpg")
-##                        while weekday == 2:
-##                                await asyncio.sleep(60)
-##                await asyncio.sleep(60)#this makes a check every minute (60 seconds)
-##
-##client.loop.create_task(Wednesday())
+
+# async def Wednesday():
+#        await client.wait_until_ready()
+#        while not client.is_closed:
+#                weekday = datetime.datetime.today().weekday()
+#                if weekday == 2:#monday=0 -> sunday=6
+#                        #channel = client.get_channel("295972677276139520")#modchat
+#                        channel = client.get_channel("135744167811874816")#allchat
+#                        await client.send_file(channel, "ITSWEDNESDAY.jpg")
+#                        while weekday == 2:
+#                                await asyncio.sleep(60)
+#                await asyncio.sleep(60)#this makes a check every minute (60 seconds)
+
+# client.loop.create_task(Wednesday())
 client.run(TOKEN)
