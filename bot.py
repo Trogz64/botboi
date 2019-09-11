@@ -287,6 +287,14 @@ async def on_message(message):
                 if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
                         await client.send_message(message.channel, msg)
 
+#Food related reactions
+        if "FOOD" in message.channel.name.upper() or "COOKING" in message.channel.name.upper():
+                if len(message.attachments) > 0:
+                        await client.add_reaction(message, "\U0001F373")
+                        await client.add_reaction(message, "\U0001F37D")
+                if "MEAT" in message.content.upper():
+                        await client.send_message(message.channel, "https://media.giphy.com/media/w8g5zUCbH215kUjycc/giphy.gif")
+
 #this is as close to a switch statement in python as possible. this uses dictionary mapping to return the name of the day from the number given by the date/time format
 def getDayName(dayNumber):
         switcher = {
