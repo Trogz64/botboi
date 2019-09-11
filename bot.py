@@ -157,7 +157,7 @@ async def on_message(message):
                         msg = "**NOW PLAYING: **" + message.content[playIndex+5:len(message.content)] + " ~~-----~~o~~--------~~ :rewind: :pause_button: :fast_forward: 0:02/4:20"
                 else:
                         playIndex = message.content.upper().find("ALEXA")
-                        msg = "**NOW PLAYING: **" + message.content[playIndex+6:len(message.content)] + " ~~-----~~o~~--------~~ :rewind: :pause_button: :fast_forward: 0:02/4:20"
+                        msg = "I'm SoRrY, I dIdN't UnDeRsTaNd YoUr QuEsTiOn..."
                 await client.send_message(message.channel, msg)
 
         if "AYY" in message.content.upper():
