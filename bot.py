@@ -165,17 +165,19 @@ async def on_message(message):
                 await client.send_message(message.channel, msg)
 
 #Dad jokes
-#         if message.content.startswith("im") or message.content.startswith("Im") or message.content.startswith("IM"):
-#                 messageLength = len(message.content)
-#                 returnMessage = message.content[3:messageLength]
-#                 msg = "Hello " + returnMessage + ", I'm dad!"
-#                 await client.send_message(message.channel, msg)
+        if message.content.startswith("im") or message.content.startswith("Im") or message.content.startswith("IM"):
+                if message.content.split() == 2:
+                        messageLength = len(message.content)
+                        returnMessage = message.content[3:messageLength]
+                        msg = "Hello " + returnMessage + ", I'm dad!"
+                        await client.send_message(message.channel, msg)
 
-#         if message.content.startswith("i'm") or message.content.startswith("I'm") or message.content.startswith("I'M"):
-#                 messageLength = len(message.content)
-#                 returnMessage = message.content[4:messageLength]
-#                 msg = "Hello " + returnMessage + ", I'm dad!"
-#                 await client.send_message(message.channel, msg)
+        if message.content.startswith("i'm") or message.content.startswith("I'm") or message.content.startswith("I'M"):
+                if message.content.split() == 2:
+                        messageLength = len(message.content)
+                        returnMessage = message.content[4:messageLength]
+                        msg = "Hello " + returnMessage + ", I'm dad!"
+                        await client.send_message(message.channel, msg)
 
 #League emotes
         if "BARD" in message.content.upper():
