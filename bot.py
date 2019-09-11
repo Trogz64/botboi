@@ -98,7 +98,8 @@ async def on_message(message):
                 if "NUMBERS" in message.content.upper():
                         msgReturn += "\nGood votes: " + str(goodCount) + "\nBad votes: " + str(badCount)
                 
-                await client.send_message(message.channel, msgReturn)
+                em = discord.Embed(title="Evaluation", description=msgReturn, colour=0x800020)
+                await client.send_message(message.channel, embed=em)
 
         if message.content.startswith(COMMAND_CHARACTER + "birthday"):
                 msg = "Happy Birthday"
@@ -110,21 +111,20 @@ async def on_message(message):
 
         if message.content.startswith(COMMAND_CHARACTER + "servercount"):
                 msg = "Currently connected to " + str(len(client.servers)) + " servers!"
-                await client.send_message(message.channel, msg)
                 #Only output the names of the server if the correct parameter is passed
                 if "NAME" in message.content.upper():
-                        serverNameOut = "Server names:\n\t"
+                        msg += "\nServer names:\n\t"
                         serverList = list(client.servers)
                         for x in range(len(serverList)):
-                                serverNameOut += serverList[x-1].name + " - " + serverList[x-1].owner.name + "\n\t"
-                        await client.send_message(message.channel, serverNameOut)
+                                msg += serverList[x-1].name + " - " + serverList[x-1].owner.name + "\n\t"
+                em = discord.Embed(title="Server Count", description=msg, colour=0x800020)
+                await client.send_message(message.channel, embed=em)
 
         if message.content.startswith(COMMAND_CHARACTER + "roll"):
                 number = int(message.content.split("d")[1])
                 result = random.randint(1,number)
-                await client.send_message(message.channel, "Rolled a d" + str(number) + "...")
-                time.sleep(2)
-                await client.send_message(message.channel, "The result is: " + str(result))
+                em = discord.Embed(title="", description="Rolled a d" + str(number) + "...\n\nThe result is: **" + str(result) + "**", colour=0x800020)
+                await client.send_message(message.channel, embed=em)
 
 #reaction to an @everyone
         if message.mention_everyone:
