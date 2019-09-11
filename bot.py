@@ -37,8 +37,8 @@ async def on_ready():
 @client.event
 async def on_message(message):
         #this stops the bot from reacting to itself
-        #if message.author == client.user:
-                #return
+        # if message.author == client.user:
+        #         return
 
 #General commands and reactions
         if message.content.startswith(COMMAND_CHARACTER + "hellobotboi"):
@@ -103,8 +103,6 @@ async def on_message(message):
                 time.sleep(2)
                 await client.send_message(message.channel, "The result is: " + str(result))
 
-                
-
 #reaction to an @everyone
         if message.mention_everyone:
                 msg = "<:pingsock:522894414356414475>"
@@ -167,19 +165,18 @@ async def on_message(message):
                 em = discord.Embed(title="~BotBoi Help~", description="Try the following commands:\n"+COMMAND_CHARACTER + "hellobotboi\n"+COMMAND_CHARACTER + "hellothere\n"+COMMAND_CHARACTER + "heyyy\n"+COMMAND_CHARACTER + "chaostime\n"+COMMAND_CHARACTER + "wednesday\n"+COMMAND_CHARACTER + "goodbot\n"+COMMAND_CHARACTER + "badbot\n"+COMMAND_CHARACTER + "evaluate [numbers]\n"+COMMAND_CHARACTER + "birthday [@mention/multiple @mentions]\n"+COMMAND_CHARACTER + "servercount\n"+COMMAND_CHARACTER + "roll d[Number of faces]", colour=0x800020)
                 await client.send_message(message.channel, embed=em)
 
-#Dad jokes                
-        if message.content.startswith("im") or message.content.startswith("Im") or message.content.startswith("IM"):
-                messageLength = len(message.content)
-                returnMessage = message.content[3:messageLength]
-                msg = "Hello " + returnMessage + ", I'm dad!"
-                await client.send_message(message.channel, msg)
+# #Dad jokes                
+#         if message.content.startswith("im") or message.content.startswith("Im") or message.content.startswith("IM"):
+#                 messageLength = len(message.content)
+#                 returnMessage = message.content[3:messageLength]
+#                 msg = "Hello " + returnMessage + ", I'm dad!"
+#                 await client.send_message(message.channel, msg)
 
-        if message.content.startswith("i'm") or message.content.startswith("I'm") or message.content.startswith("I'M"):
-                messageLength = len(message.content)
-                returnMessage = message.content[4:messageLength]
-                msg = "Hello " + returnMessage + ", I'm dad!"
-                await client.send_message(message.channel, msg)
-
+#         if message.content.startswith("i'm") or message.content.startswith("I'm") or message.content.startswith("I'M"):
+#                 messageLength = len(message.content)
+#                 returnMessage = message.content[4:messageLength]
+#                 msg = "Hello " + returnMessage + ", I'm dad!"
+#                 await client.send_message(message.channel, msg)
 
 #League emotes
         if "BARD" in message.content.upper():
