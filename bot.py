@@ -156,7 +156,6 @@ async def on_message(message):
                 if(playIndex > 0):
                         msg = "**NOW PLAYING: **" + message.content[playIndex+5:len(message.content)] + " ~~-----~~o~~--------~~ :rewind: :pause_button: :fast_forward: 0:02/4:20"
                 else:
-                        playIndex = message.content.upper().find("ALEXA")
                         msg = "I'm SoRrY, I dIdN't UnDeRsTaNd YoUr QuEsTiOn..."
                 await client.send_message(message.channel, msg)
 
@@ -179,7 +178,7 @@ async def on_message(message):
                         await client.send_message(message.channel, msg)
 
 #League emotes
-        if "BARD" in message.content.upper():
+        if "BARD" in message.content.upper().split()[0] or " BARD " in message.content.upper():
                 if message.author == client.user:
                         return
                 msg = "<:ootay:456893214880825354>"
@@ -191,7 +190,7 @@ async def on_message(message):
                 if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
                         await client.send_message(message.channel, msg)
 
-        if "BRAUM" in message.content.upper():
+        if "BRAUM" in message.content.upper().split()[0] or " BRAUM " in message.content.upper():
                 if message.author == client.user:
                         return
                 msg = "<:standbehindbraum:457164456846163969>"
@@ -203,7 +202,7 @@ async def on_message(message):
                 if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
                         await client.send_message(message.channel, msg)
 
-        if "VEL" in message.content.upper() or "KOZ" in message.content.upper():
+        if "VEL" in message.content.upper().split()[0] or " VEL " in message.content.upper() or "KOZ" in message.content.upper().split()[0] or " KOZ " in message.content.upper():
                 if message.author == client.user:
                         return
                 msg = "<:ohdarn:457162626313617438>"
@@ -215,7 +214,7 @@ async def on_message(message):
                 if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
                         await client.send_message(message.channel, msg)
 
-        if "AHRI" in message.content.upper():
+        if "AHRI" in message.content.upper().split()[0] or " AHRI " in message.content.upper():
                 if message.author == client.user:
                         return
                 msg = "<:ahri:457199789591887872>"
@@ -227,7 +226,7 @@ async def on_message(message):
                 if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
                         await client.send_message(message.channel, msg)
 
-        if "SWAIN" in message.content.upper():
+        if "SWAIN" in message.content.upper().split()[0] or " SWAIN " in message.content.upper():
                 if message.author == client.user:
                         return
                 msg = "<:swain:457212057683492864>"
@@ -239,7 +238,7 @@ async def on_message(message):
                 if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
                         await client.send_message(message.channel, msg)
 
-        if "PYKE" in message.content.upper():
+        if "PYKE" in message.content.upper().split()[0] or " PYKE " in message.content.upper():
                 if message.author == client.user:
                         return
                 msg = "<:pyke:458619798117548042>"
@@ -251,7 +250,7 @@ async def on_message(message):
                 if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
                         await client.send_message(message.channel, msg)
         
-        if "YORICK" in message.content.upper():
+        if "YORICK" in message.content.upper().split()[0] or " YORICK " in message.content.upper():
                 if message.author == client.user:
                         return
                 msg = "<:yorick:619544222068113408>"
@@ -263,7 +262,7 @@ async def on_message(message):
                 if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
                         await client.send_message(message.channel, msg)
 
-        if "LUX" in message.content.upper():
+        if "LUX" in message.content.upper().split()[0] or " LUX " in message.content.upper():
                 if message.author == client.user:
                         return
                 msg = "<:lux:619545161604792320>"
@@ -275,7 +274,7 @@ async def on_message(message):
                 if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
                         await client.send_message(message.channel, msg)
         
-        if "NAMI" in message.content.upper():
+        if "NAMI" in message.content.upper().split()[0] or " NAMI " in message.content.upper():
                 if message.author == client.user:
                         return
                 msg = "<:nami:619545130566811661>"
