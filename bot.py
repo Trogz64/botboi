@@ -164,6 +164,11 @@ async def on_message(message):
                 msg = "lmao"
                 await client.send_message(message.channel, msg)
 
+        if message.content.upper() == "F":
+                if message.author == client.user:
+                        return
+                await client.send_message(message.channel, "F")
+
 #Dad joke
         if len(message.content.split()) == 2:
                 if message.content.startswith("im") or message.content.startswith("Im") or message.content.startswith("IM"):
