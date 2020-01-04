@@ -43,7 +43,7 @@ async def on_message(message):
 
 #Help command
         if message.content.startswith(COMMAND_CHARACTER + "help"):
-                em = discord.Embed(title="~BotBoi Help~", description="Try the following commands:\n"+COMMAND_CHARACTER + "hellobotboi\n"+COMMAND_CHARACTER + "hellothere\n"+COMMAND_CHARACTER + "heyyy\n"+COMMAND_CHARACTER + "chaostime\n"+COMMAND_CHARACTER + "wednesday\n"+COMMAND_CHARACTER + "goodbot\n"+COMMAND_CHARACTER + "badbot\n"+COMMAND_CHARACTER + "evaluate [numbers]\n"+COMMAND_CHARACTER + "birthday [@mention/multiple @mentions]\n"+COMMAND_CHARACTER + "servercount\n"+COMMAND_CHARACTER + "roll d[Number of faces]", colour=0x800020)
+                em = discord.Embed(title="~BotBoi Help~", description="Try the following commands:\n" + COMMAND_CHARACTER + "hellobotboi\n" + COMMAND_CHARACTER + "hellothere\n" + COMMAND_CHARACTER + "heyyy\n" + COMMAND_CHARACTER + "chaostime\n" + COMMAND_CHARACTER + "wednesday\n" + COMMAND_CHARACTER + "goodbot\n" + COMMAND_CHARACTER + "badbot\n" + COMMAND_CHARACTER + "evaluate [numbers]\n" + COMMAND_CHARACTER + "birthday [@mention/multiple @mentions]\n" + COMMAND_CHARACTER + "servercount\n" + COMMAND_CHARACTER + "roll d[Number of faces]\n" + COMMAND_CHARACTER + "poll [Question]|[Option1]|[Option2]|...|[Option9]", colour=0x800020)
                 await client.send_message(message.channel, embed=em)
 
 #General commands
@@ -126,6 +126,38 @@ async def on_message(message):
                 result = random.randint(1,number)
                 em = discord.Embed(title="", description="Rolled a d" + str(number) + "...\n\nThe result is: **" + str(result) + "**", colour=0x800020)
                 await client.send_message(message.channel, embed=em)
+
+        if message.content.startswith(COMMAND_CHARACTER + "poll"):
+                try:
+                        params = message.content[6:len(message.content)].split("|")
+                        question = params[0]
+                        numOfOptions = len(params)-1
+                        #check to see if enough options have been provided
+                        if numOfOptions < 2:
+                                await client.send_message(message.channel, "Please provide at least two options for your poll")
+                                return
+                        if numOfOptions > 9:
+                                await client.send_message(message.channel, "You have exceeded the maximum number of options (9)")
+                                return
+                except:
+                        await client.send_message(message.channel, "Invalid syntax. Please provide at least two options for your poll")
+                        return
+                optionsString = ""
+                for x in range(numOfOptions+1):
+                        if x > 0:
+                                optionsString += getNumberEmote(x) + ": " + str(params[x]) + "\n"
+                
+                em = discord.Embed(title=question, description=optionsString, colour=0x800020)
+                await client.send_message(message.channel, embed=em)
+                
+                # need to find the message to add reactions to it
+                async for m in client.logs_from(message.channel, limit=1):
+                        if m.author == client.user:
+                                botMessage = m
+
+                for i in range(numOfOptions+1):
+                        if i > 0:
+                                await client.add_reaction(botMessage, getNumberEmote(i))
 
 #reaction to an @everyone
         if message.mention_everyone:
@@ -318,6 +350,20 @@ def getDayName(dayNumber):
                 6: "Sunday",
                 }
         return switcher.get(dayNumber, "INVALID DAY")
+
+def getNumberEmote(number):
+        switcher = {
+                1: "\U0001F534",
+                2: "\U0001F7E0",
+                3: "\U0001F7E1",
+                4: "\U0001F7E2",
+                5: "\U0001F535",
+                6: "\U0001F7E3",
+                7: "\U0001F7E4",
+                8: "\U000026AB",
+                9: "\U000026AA",
+                }
+        return switcher.get(number, "INVALID NUMBER")
 
 #Methods
 
