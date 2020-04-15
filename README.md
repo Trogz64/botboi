@@ -42,6 +42,7 @@ To create your own version of the bot you must create a config.json file in root
 * --birthday [@mention/multiple @mentions]
 * --servercount
 * --roll d[Number of faces]
+* --poll [Question]|[Option1]|[Option2]|...|[Option9]
 
 #### Other
 
