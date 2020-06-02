@@ -234,6 +234,18 @@ async def on_message(message):
                 if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
                         await client.send_message(message.channel, msg)
 
+        if "MEEP" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
+                if message.author == client.user:
+                        return
+                msg = "<:sexymeep:717366022574702696>"
+                sent = False
+                for x in client.get_all_emojis():
+                        if x.name == "sexymeep":        #adds the reaction if the emoji is found
+                                await client.add_reaction(message, x)
+                                sent = True
+                if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
+                        await client.send_message(message.channel, msg)
+
         if "BRAUM" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
                 if message.author == client.user:
                         return
