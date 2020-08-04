@@ -53,7 +53,8 @@ async def on_message(message):
                 + COMMAND_CHARACTER + "servercount\n" 
                 + COMMAND_CHARACTER + "roll d[Number of faces]\n" 
                 + COMMAND_CHARACTER + "poll [Question]|[Option1]|[Option2]|...|[Option9]\n"
-                + COMMAND_CHARACTER + "github", colour=0x800020)
+                + COMMAND_CHARACTER + "github\n"
+                + COMMAND_CHARACTER + "invite", colour=0x800020)
                 await message.channel.send(embed=em)
 
 #General commands
@@ -165,6 +166,11 @@ async def on_message(message):
 
         if message.content.startswith(COMMAND_CHARACTER + "github"):
                 em = discord.Embed(title="Botboi Github", description="https://github.com/Trogz64/botboi", colour=0x800020)
+                await message.channel.send(embed=em)
+
+        if message.content.startswith(COMMAND_CHARACTER + "invite"):
+                em = discord.Embed(title="Botboi Invite Link", description="Use this link to invite me to your servers!\n"
+                + "https://discord.com/api/oauth2/authorize?client_id=416406487024402432&permissions=523328&redirect_uri=https%3A%2F%2Fdiscordapp.com%2Fapi%2Foauth2%2Fauthorize%3Fclient_id%3D416406487024402432%26permissions%3D518208%26redirect_uri%3Dhttps%253A%252F%252Fdiscordapp.com%252Fapi%252Foauth2%252Fauthorize%253Fclient_&scope=bot", colour=0x800020)
                 await message.channel.send(embed=em)
 
 #reaction to an @everyone
