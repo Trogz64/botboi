@@ -185,7 +185,7 @@ async def on_message(message):
                 await message.add_reaction(emoji)
 
 #Special reactions
-        if "ALEXA" in message.content.upper():
+        if "ALEXA" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
                 if message.author == client.user:
                         return
                 playIndex = message.content.upper().find("PLAY")
