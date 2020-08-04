@@ -121,12 +121,6 @@ async def on_message(message):
 
         if message.content.startswith(COMMAND_CHARACTER + "servercount"):
                 msg = "Currently connected to " + str(len(client.guilds)) + " servers!"
-                #Only output the names of the server if the correct parameter is passed
-                if "NAME" in message.content.upper():
-                        msg += "\nServer names:\n\t"
-                        serverList = list(client.guilds)
-                        for x in range(len(serverList)):
-                                msg += serverList[x-1].name + " - " + serverList[x-1].owner.name + "\n\t"
                 em = discord.Embed(title="Server Count", description=msg, colour=0x800020)
                 await message.channel.send(embed=em)
 
