@@ -52,7 +52,8 @@ async def on_message(message):
                 + COMMAND_CHARACTER + "birthday [@mention/multiple @mentions]\n" 
                 + COMMAND_CHARACTER + "servercount\n" 
                 + COMMAND_CHARACTER + "roll d[Number of faces]\n" 
-                + COMMAND_CHARACTER + "poll [Question]|[Option1]|[Option2]|...|[Option9]", colour=0x800020)
+                + COMMAND_CHARACTER + "poll [Question]|[Option1]|[Option2]|...|[Option9]\n"
+                + COMMAND_CHARACTER + "github", colour=0x800020)
                 await message.channel.send(embed=em)
 
 #General commands
@@ -161,6 +162,10 @@ async def on_message(message):
                 for i in range(numOfOptions+1):
                         if i > 0:
                                 await botMessage.add_reaction(getNumberEmote(i))
+
+        if message.content.startswith(COMMAND_CHARACTER + "github"):
+                em = discord.Embed(title="Botboi Github", description="https://github.com/Trogz64/botboi", colour=0x800020)
+                await message.channel.send(embed=em)
 
 #reaction to an @everyone
         if message.mention_everyone:
