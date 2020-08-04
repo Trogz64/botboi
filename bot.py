@@ -417,17 +417,4 @@ def readAndWriteToFile(myFile):
         except:
                 print("File read/write error")
 
-# async def Wednesday():
-#        await client.wait_until_ready()
-#        while not client.is_closed:
-#                weekday = datetime.datetime.today().weekday()
-#                if weekday == 2:#monday=0 -> sunday=6
-#                        #channel = client.get_channel("295972677276139520")#modchat
-#                        channel = client.get_channel("135744167811874816")#allchat
-#                        await client.send_file(channel, "ITSWEDNESDAY.jpg")
-#                        while weekday == 2:
-#                                await asyncio.sleep(60)
-#                await asyncio.sleep(60)#this makes a check every minute (60 seconds)
-
-# client.loop.create_task(Wednesday())
 client.run(TOKEN)
