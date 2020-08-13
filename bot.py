@@ -8,8 +8,11 @@ import logging
 import random
 import string
 import time
+import os
 
-with open('config.json') as config_file:
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
+with open(os.path.join(__location__, 'config.json')) as config_file:
         data = json.load(config_file)
 
 TOKEN = data["token"]
@@ -20,7 +23,7 @@ client = discord.Client()
 
 logger = logging.getLogger("discord")
 logger.setLevel(logging.DEBUG)
-handler =logging.FileHandler(filename="BotBoiFiles/botLog.log", encoding="utf-8",mode="w")
+handler =logging.FileHandler(filename=os.path.join(__location__, "BotBoiFiles/botLog.log"), encoding="utf-8",mode="w")
 handler.setFormatter(logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s"))
 logger.addHandler(handler)
 
@@ -77,7 +80,7 @@ async def on_message(message):
         if message.content.startswith(COMMAND_CHARACTER + "wednesday"):
                 weekday = datetime.datetime.today().weekday()
                 if weekday == 2:#monday=0 -> sunday=6
-                        await message.channel.send(file = discord.File(fp = 'BotBoiFiles/ITSWEDNESDAY.jpg', filename = 'WednesdayFrog.jpg'))
+                        await message.channel.send(file = discord.File(fp = os.path.join(__location__, 'BotBoiFiles/ITSWEDNESDAY.jpg'), filename = 'WednesdayFrog.jpg'))
                 else:
                         await message.channel.send("It is not Wednesday...\nIt is " + getDayName(weekday) + " my dudes!")
 
@@ -87,7 +90,7 @@ async def on_message(message):
 
                 #increment the good counter
                 evaluateFilesExist()
-                goodFile = "BotBoiFiles/goodFile.txt"
+                goodFile = os.path.join(__location__, "BotBoiFiles/goodFile.txt")
                 readAndWriteToFile(goodFile)
 
         if message.content.startswith(COMMAND_CHARACTER + "badbot"):
@@ -96,14 +99,14 @@ async def on_message(message):
 
                 #increment the bad counter
                 evaluateFilesExist()
-                badFile = "BotBoiFiles/badFile.txt"
+                badFile = os.path.join(__location__, "BotBoiFiles/badFile.txt")
                 readAndWriteToFile(badFile)
 
         if message.content.startswith(COMMAND_CHARACTER + "evaluate"):
                 evaluateFilesExist()
-                goodFile = open("BotBoiFiles/goodFile.txt", "r")
+                goodFile = open(os.path.join(__location__, "BotBoiFiles/goodFile.txt"), "r")
                 goodCount = int(goodFile.read())
-                badFile = open("BotBoiFiles/badFile.txt", "r")
+                badFile = open(os.path.join(__location__, "BotBoiFiles/badFile.txt"), "r")
                 badCount = int(badFile.read())
                 percent = (goodCount / (float(goodCount + badCount))) * 100
                 msgReturn = "The results show that I am " + str(round(percent, 2)) + "% good!"
@@ -391,17 +394,17 @@ def evaluateFilesExist():
         #make sure that the required text files exist
         #try to open the file. If it cannot be found then create it
         try:
-                goodFile = open("BotBoiFiles/goodFile.txt", "r")
+                goodFile = open(os.path.join(__location__, "BotBoiFiles/goodFile.txt"), "r")
                 goodFile.close()
         except FileNotFoundError:
-                createGoodFile = open("BotBoiFiles/goodFile.txt", "w")
+                createGoodFile = open(os.path.join(__location__, "BotBoiFiles/goodFile.txt"), "w")
                 createGoodFile.write("0")
                 createGoodFile.close()
         try:
-                badFile = open("BotBoiFiles/badFile.txt", "r")
+                badFile = open(os.path.join(__location__, "BotBoiFiles/badFile.txt"), "r")
                 badFile.close()
         except FileNotFoundError:
-                createBadFile = open("BotBoiFiles/badFile.txt", "w")
+                createBadFile = open(os.path.join(__location__, "BotBoiFiles/badFile.txt"), "w")
                 createBadFile.write("0")
                 createBadFile.close()
 
