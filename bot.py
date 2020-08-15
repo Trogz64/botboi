@@ -51,7 +51,7 @@ async def on_message(message):
                 + COMMAND_CHARACTER + "wednesday\n" 
                 + COMMAND_CHARACTER + "goodbot\n" 
                 + COMMAND_CHARACTER + "badbot\n" 
-                + COMMAND_CHARACTER + "evaluate [numbers]\n" 
+                + COMMAND_CHARACTER + "evaluate <numbers>\n" 
                 + COMMAND_CHARACTER + "birthday [@mention/multiple @mentions]\n" 
                 + COMMAND_CHARACTER + "servercount\n" 
                 + COMMAND_CHARACTER + "roll d[Number of faces]\n" 
