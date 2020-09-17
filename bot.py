@@ -219,13 +219,13 @@ async def on_message(message):
 
 #Dad joke
         if len(message.content.split()) == 2:
-                if message.content.startswith("im") or message.content.startswith("Im") or message.content.startswith("IM"):
+                if message.content.split()[0].upper() == "IM":
                         messageLength = len(message.content)
                         returnMessage = message.content[3:messageLength]
                         msg = "Hello " + returnMessage + ", I'm dad!"
                         await message.channel.send(msg)
 
-                if message.content.startswith("i'm") or message.content.startswith("I'm") or message.content.startswith("I'M"):
+                if message.content.split()[0].upper() == "I'M":
                         messageLength = len(message.content)
                         returnMessage = message.content[4:messageLength]
                         msg = "Hello " + returnMessage + ", I'm dad!"
