@@ -30,7 +30,7 @@ logger.addHandler(handler)
 @client.event
 async def on_ready():
         print("\nLogged in as {0.user}\n".format(client))
-        await client.change_presence(activity = discord.Game(name = COMMAND_CHARACTER + "help for help"))
+        await client.change_presence(activity = discord.Activity(type = discord.ActivityType.listening, name = COMMAND_CHARACTER + "help"))
         numberOfServers = len(client.guilds)
         print("Connected to " + str(numberOfServers) + " servers")
         print("------\n")
