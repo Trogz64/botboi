@@ -352,6 +352,18 @@ async def on_message(message):
                                 sent = True
                 if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
                         await message.channel.send(msg)
+        
+        if "KDA" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
+                if message.author == client.user:
+                        return
+                msg = "<:KDA:771168104968486962>"
+                sent = False
+                for x in client.emojis:
+                        if x.name == "KDA":        #adds the reaction if the emoji is found
+                                await message.add_reaction(x)
+                                sent = True
+                if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
+                        await message.channel.send(msg)
 
 #Food related reactions
         if "FOOD" in message.channel.name.upper() or "COOKING" in message.channel.name.upper():
