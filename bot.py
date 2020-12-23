@@ -50,7 +50,7 @@ async def help(ctx):
         + COMMAND_CHARACTER + "birthday [@mention/multiple @mentions]\n" 
         + COMMAND_CHARACTER + "servercount\n" 
         + COMMAND_CHARACTER + "roll d[Number of faces]\n" 
-        + COMMAND_CHARACTER + "poll [Question]|[Option1]|[Option2]|...|[Option9]\n"
+        + COMMAND_CHARACTER + "poll \"Question\" \"Option1\" \"Option2\" ... \"Option9\"\n"
         + COMMAND_CHARACTER + "github\n"
         + COMMAND_CHARACTER + "invite", colour=0x800020)
         await ctx.send(embed=em)
