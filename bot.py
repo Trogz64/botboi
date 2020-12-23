@@ -36,43 +36,54 @@ async def on_ready():
 
 # Help command
 @bot.command()
-async def help(ctx):
-        # if message.content.startswith(COMMAND_CHARACTER + "help"):
-        em = discord.Embed(title="~BotBoi Help~", description="Try the following commands:\n" 
-        + COMMAND_CHARACTER + "hellobotboi\n" 
-        + COMMAND_CHARACTER + "hellothere\n" 
-        + COMMAND_CHARACTER + "heyyy\n" 
-        + COMMAND_CHARACTER + "chaostime\n" 
-        + COMMAND_CHARACTER + "wednesday\n" 
-        + COMMAND_CHARACTER + "goodbot\n" 
-        + COMMAND_CHARACTER + "badbot\n" 
-        + COMMAND_CHARACTER + "evaluate <numbers>\n" 
-        + COMMAND_CHARACTER + "birthday [@mention/multiple @mentions]\n" 
-        + COMMAND_CHARACTER + "servercount\n" 
-        + COMMAND_CHARACTER + "roll d[Number of faces]\n" 
-        + COMMAND_CHARACTER + "poll \"Question\" \"Option1\" \"Option2\" ... \"Option9\"\n"
-        + COMMAND_CHARACTER + "github\n"
-        + COMMAND_CHARACTER + "invite", colour=0x800020)
-        await ctx.send(embed=em)
+async def help(ctx, *args):
+        if len(args) > 0:
+                exists = False
+                for comm in bot.commands:
+                        if args[0] == comm.name:
+                                exists = True
+                                em = discord.Embed(title="\"" + comm.name + "\"" + " help", description=comm.help + "\n\nUsage: " + comm.usage, colour=0x800020)
+                                await ctx.send(embed=em)
+                if not exists:
+                        em = discord.Embed(descirption="Unknown command \"" + str(args[0] + "\""), colour=0x800020)
+                        await ctx.send(embed=em)
+        else:
+                em = discord.Embed(title="~BotBoi Help~", description="Try the following commands:\n" 
+                + COMMAND_CHARACTER + "hellobotboi\n" 
+                + COMMAND_CHARACTER + "hellothere\n" 
+                + COMMAND_CHARACTER + "heyyy\n" 
+                + COMMAND_CHARACTER + "chaostime\n" 
+                + COMMAND_CHARACTER + "wednesday\n" 
+                + COMMAND_CHARACTER + "goodbot\n" 
+                + COMMAND_CHARACTER + "badbot\n" 
+                + COMMAND_CHARACTER + "evaluate <numbers>\n" 
+                + COMMAND_CHARACTER + "birthday [@mention/multiple @mentions]\n" 
+                + COMMAND_CHARACTER + "servercount\n" 
+                + COMMAND_CHARACTER + "roll d[Number of faces]\n" 
+                + COMMAND_CHARACTER + "poll \"Question\" \"Option1\" \"Option2\" ... \"Option9\"\n"
+                + COMMAND_CHARACTER + "github\n"
+                + COMMAND_CHARACTER + "invite\n"
+                + "\n" + COMMAND_CHARACTER + "help [command] for more info about a command", colour=0x800020)
+                await ctx.send(embed=em)
 
 # Commands
-@bot.command()
+@bot.command(help="Botboi greets you!", usage=COMMAND_CHARACTER + "hellobotboi")
 async def hellobotboi(ctx):
         await ctx.send("Hello {0.author.mention}".format(ctx))
 
-@bot.command()
+@bot.command(help="You are a bold one!", usage=COMMAND_CHARACTER + "hellothere")
 async def hellothere(ctx):
         await ctx.send("General Kenobi!")
 
-@bot.command()
+@bot.command(help="", usage=COMMAND_CHARACTER + "heyyy")
 async def heyyy(ctx):
         await ctx.send("Queen Bee")
 
-@bot.command()
+@bot.command(help="Pings @everyone\nYour friends will love you!", usage=COMMAND_CHARACTER + "chaostime")
 async def chaostime(ctx):
         await ctx.send("@everyone <:kappa:522893572131913748>")
         
-@bot.command()
+@bot.command(help="Give this a try on a Wednesday...", usage=COMMAND_CHARACTER + "wednesday")
 async def wednesday(ctx):
         weekday = datetime.datetime.today().weekday()
         if weekday == 2:#monday=0 -> sunday=6
@@ -80,7 +91,7 @@ async def wednesday(ctx):
         else:
                 await ctx.send("It is not Wednesday...\nIt is " + getDayName(weekday) + " my dudes!")
 
-@bot.command()
+@bot.command(help="Increments Botboi's good counter", usage=COMMAND_CHARACTER + "goodbot")
 async def goodbot(ctx):
         await ctx.send(":blush:")
 
@@ -89,7 +100,7 @@ async def goodbot(ctx):
         goodFile = os.path.join(__location__, "BotBoiFiles/goodFile.txt")
         readAndWriteToFile(goodFile)
 
-@bot.command()
+@bot.command(help="Increments Botboi's bad counter", usage=COMMAND_CHARACTER + "badbot")
 async def badbot(ctx):
         await ctx.send(":sob:")
 
@@ -98,7 +109,8 @@ async def badbot(ctx):
         badFile = os.path.join(__location__, "BotBoiFiles/badFile.txt")
         readAndWriteToFile(badFile)
 
-@bot.command()
+@bot.command(help="Returns the results of using goodbot and badbot commands as a percentage.\n"
+        +"Include optional parameter 'number' to also return the exact numbers.", usage=COMMAND_CHARACTER + "evaluate <number>")
 async def evaluate(ctx, *args):
         evaluateFilesExist()
         goodFile = open(os.path.join(__location__, "BotBoiFiles/goodFile.txt"), "r")
@@ -114,7 +126,8 @@ async def evaluate(ctx, *args):
         em = discord.Embed(title="Evaluation", description=msgReturn, colour=0x800020)
         await ctx.send(embed=em)
 
-@bot.command()
+@bot.command(help="Send your friends a Birthday message from Botboi.\n"
+        +"Mention your friend, mention all your friends, mention no one, or mention yourself!", usage=COMMAND_CHARACTER + "birthday @mention/multiple @mentions")
 async def birthday(ctx):
         msg = "Happy Birthday"
         mentionList = ctx.message.mentions
@@ -123,19 +136,20 @@ async def birthday(ctx):
         msg += "!\nhttp://i.imgur.com/P1vH64S.gif"
         await ctx.send(msg)
 
-@bot.command()
+@bot.command(help="Returns the number of servers that Botboi is currently connected to", usage=COMMAND_CHARACTER + "servercount")
 async def servercount(ctx):
         em = discord.Embed(title="Server Count", description="Currently connected to " + str(len(bot.guilds)) + " servers!", colour=0x800020)
         await ctx.send(embed=em)
 
-@bot.command()
+@bot.command(help="Rolls a die. You pick the number of sides (e.g. d6 = 6 sides, d20 = 20 sides, etc.)", usage=COMMAND_CHARACTER + "roll d[number of faces]")
 async def roll(ctx, arg1):
         number = int(arg1.split("d")[1])
         result = random.randint(1,number)
         em = discord.Embed(title="", description="Rolled a d" + str(number) + "...\n\nThe result is: **" + str(result) + "**", colour=0x800020)
         await ctx.send(embed=em)
 
-@bot.command()
+@bot.command(help="Create a poll for users to vote on.\nVote using the reactions added.\nYou can have up to nine (9) options in your poll.\n\n"
+        +"Surround your question and options in quotation marks, and separate them with a space", usage=COMMAND_CHARACTER + "poll \"Question\" \"Option1\" \"Option2\" ... \"Option9\"")
 async def poll(ctx, *args):
         if len(args) >= 1:
                 question = args[0]
@@ -163,12 +177,12 @@ async def poll(ctx, *args):
                 if i > 0:
                         await botMessage.add_reaction(getNumberEmote(i))
 
-@bot.command()
+@bot.command(help="Returns the link to the Botboi Github repository", usage=COMMAND_CHARACTER + "github")
 async def github(ctx):
         em = discord.Embed(title="Botboi Github", description="https://github.com/Trogz64/botboi", colour=0x800020)
         await ctx.send(embed=em)
 
-@bot.command()
+@bot.command(help="Returns the link with which you can invite Botboi to your own server", usage=COMMAND_CHARACTER + "invite")
 async def invite(ctx):
         em = discord.Embed(title="Botboi Invite Link", description="Use this link to invite me to your servers!\n"
         + "https://discord.com/api/oauth2/authorize?client_id=416406487024402432&permissions=523328&redirect_uri=https%3A%2F%2Fdiscordapp.com%2Fapi%2Foauth2%2Fauthorize%3Fclient_id%3D416406487024402432%26permissions%3D518208%26redirect_uri%3Dhttps%253A%252F%252Fdiscordapp.com%252Fapi%252Foauth2%252Fauthorize%253Fclient_&scope=bot", colour=0x800020)
