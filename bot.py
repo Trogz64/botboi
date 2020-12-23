@@ -156,13 +156,9 @@ async def poll(ctx, *args):
                         optionsString += getNumberEmote(x) + ": " + str(args[x]) + "\n"
         
         em = discord.Embed(title=question, description=optionsString, colour=0x800020)
-        await ctx.send(embed=em)
-        
-        # need to find the message to add reactions to it
-        # async for m in ctx.channel.history(limit=1):
-        #         if m.author == bot.user:
-        botMessage = ctx.channel.last_message
+        botMessage = await ctx.send(embed=em)
 
+        # Add the reactions which users can vote with
         for i in range(numOfOptions+1):
                 if i > 0:
                         await botMessage.add_reaction(getNumberEmote(i))
