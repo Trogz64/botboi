@@ -253,7 +253,7 @@ async def messageReactions(message):
 
         #League emotes
         #We need to make sure that the intended trigger is a word in itself, and not a substring in a different word
-        if "BARD" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
+        if "BARD" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "BARDS" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
                 if message.author == bot.user:
                         return
                 msg = "<:ootay:456893214880825354>"
@@ -268,16 +268,16 @@ async def messageReactions(message):
         if "MEEP" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "MEEPS" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
                 if message.author == bot.user:
                         return
-                msg = "<:sexymeep:717366022574702696>"
+                msg = "<:meep:797893845819457567>"
                 sent = False
                 for x in bot.emojis:
-                        if x.name == "sexymeep":        #adds the reaction if the emoji is found
+                        if x.name == "meep":        #adds the reaction if the emoji is found
                                 await message.add_reaction(x)
                                 sent = True
                 if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
                         await message.channel.send(msg)
 
-        if "BRAUM" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
+        if "BRAUM" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "BRAUMS" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
                 if message.author == bot.user:
                         return
                 msg = "<:standbehindbraum:457164456846163969>"
@@ -289,7 +289,7 @@ async def messageReactions(message):
                 if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
                         await message.channel.send(msg)
 
-        if "VEL" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "KOZ" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "VELKOZ" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
+        if "VEL" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "VELS" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "KOZ" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "KOZS" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "VELKOZ" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "VELKOZS" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
                 if message.author == bot.user:
                         return
                 msg = "<:ohdarn:457162626313617438>"
@@ -301,7 +301,7 @@ async def messageReactions(message):
                 if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
                         await message.channel.send(msg)
 
-        if "AHRI" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
+        if "AHRI" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "AHRIS" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
                 if message.author == bot.user:
                         return
                 msg = "<:ahri:457199789591887872>"
@@ -313,7 +313,7 @@ async def messageReactions(message):
                 if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
                         await message.channel.send(msg)
 
-        if "SWAIN" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
+        if "SWAIN" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "SWAINS" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
                 if message.author == bot.user:
                         return
                 msg = "<:swain:457212057683492864>"
@@ -325,7 +325,7 @@ async def messageReactions(message):
                 if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
                         await message.channel.send(msg)
 
-        if "PYKE" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
+        if "PYKE" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "PYKES" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
                 if message.author == bot.user:
                         return
                 msg = "<:pyke:458619798117548042>"
@@ -337,7 +337,7 @@ async def messageReactions(message):
                 if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
                         await message.channel.send(msg)
         
-        if "YORICK" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
+        if "YORICK" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "YORICKS" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
                 if message.author == bot.user:
                         return
                 msg = "<:yorick:619544222068113408>"
@@ -349,7 +349,7 @@ async def messageReactions(message):
                 if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
                         await message.channel.send(msg)
 
-        if "LUX" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
+        if "LUX" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "LUXS" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
                 if message.author == bot.user:
                         return
                 msg = "<:lux:619545161604792320>"
@@ -361,7 +361,7 @@ async def messageReactions(message):
                 if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
                         await message.channel.send(msg)
         
-        if "NAMI" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
+        if "NAMI" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "NAMIS" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
                 if message.author == bot.user:
                         return
                 msg = "<:nami:619545130566811661>"
