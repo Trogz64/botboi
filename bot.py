@@ -52,7 +52,6 @@ async def help(ctx, *args):
                 + COMMAND_CHARACTER + "hellobotboi\n" 
                 + COMMAND_CHARACTER + "hellothere\n" 
                 + COMMAND_CHARACTER + "heyyy\n" 
-                + COMMAND_CHARACTER + "chaostime\n" 
                 + COMMAND_CHARACTER + "wednesday\n" 
                 + COMMAND_CHARACTER + "goodbot\n" 
                 + COMMAND_CHARACTER + "badbot\n" 
@@ -78,10 +77,6 @@ async def hellothere(ctx):
 @bot.command(help="", usage=COMMAND_CHARACTER + "heyyy")
 async def heyyy(ctx):
         await ctx.send("Queen Bee")
-
-@bot.command(help="Pings @everyone\nYour friends will love you!", usage=COMMAND_CHARACTER + "chaostime")
-async def chaostime(ctx):
-        await ctx.send("@everyone <:kappa:522893572131913748>")
         
 @bot.command(help="Give this a try on a Wednesday...", usage=COMMAND_CHARACTER + "wednesday")
 async def wednesday(ctx):
