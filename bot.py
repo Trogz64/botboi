@@ -60,6 +60,7 @@ async def help(ctx, *args):
                 + COMMAND_CHARACTER + "servercount\n" 
                 + COMMAND_CHARACTER + "roll d[Number of faces]\n" 
                 + COMMAND_CHARACTER + "poll \"Question\" \"Option1\" \"Option2\" ... \"Option9\"\n"
+                + COMMAND_CHARACTER + "eightball \"Question\"\n"
                 + COMMAND_CHARACTER + "github\n"
                 + COMMAND_CHARACTER + "invite\n"
                 + "\n" + COMMAND_CHARACTER + "help [command] for more info about a command", colour=0x800020)
@@ -171,6 +172,18 @@ async def poll(ctx, *args):
         for i in range(numOfOptions+1):
                 if i > 0:
                         await botMessage.add_reaction(getNumberEmote(i))
+
+@bot.command(help="Ask the Magic 8-Ball a question", usage=COMMAND_CHARACTER + "eightball \"Question\"")
+async def eightball(ctx, *args):
+        if len(args) > 0:
+                question = args[0]
+        else:
+                await ctx.send("You need to ask the Magic 8-Ball a question.")
+                return
+        
+        response = get8BallResponse(random.randint(1,20))
+        em = discord.Embed(title="", description="\U0001F3B1 " + response, colour=0x800020)
+        await ctx.send(embed=em)
 
 @bot.command(help="Returns the link to the Botboi Github repository", usage=COMMAND_CHARACTER + "github")
 async def github(ctx):
@@ -414,6 +427,31 @@ def getNumberEmote(number):
                 9: "\U000026AA",
                 }
         return switcher.get(number, "INVALID NUMBER")
+
+def get8BallResponse(number):
+        switcher = {
+                1: "It is Certain.",
+                2: "It is decidedly so.",
+                3: "Without a doubt.",
+                4: "Yes definitely.",
+                5: "You may rely on it.",
+                6: "As I see it, yes.",
+                7: "Most likely.",
+                8: "Outlook good.",
+                9: "Yes.",
+                10: "Signs point to yes.",
+                11: "Reply hazy, try again.",
+                12: "Ask again later.",
+                13: "Better not tell you now.",
+                14: "Cannot predict now.",
+                15: "Concentrate and ask again.",
+                16: "Don't count on it.",
+                17: "My reply is no.",
+                18: "My sources say no.",
+                19: "Outlook not so good.",
+                20: "Very doubtful.",
+                }
+        return switcher.get(number, "INVALID SELECTION")
 
 #Methods
 def evaluateFilesExist():
