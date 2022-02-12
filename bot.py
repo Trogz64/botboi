@@ -231,10 +231,6 @@ async def messageReactions(message):
                         msg = "I'm SoRrY, I dIdN't UnDeRsTaNd YoUr QuEsTiOn..."
                 await message.channel.send(msg)
 
-        if "AYY" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
-                msg = "lmao"
-                await message.channel.send(msg)
-
         if message.content == "F":
                 if message.author == bot.user:
                         return
@@ -244,20 +240,6 @@ async def messageReactions(message):
                 if message.author == bot.user:
                         return
                 await message.channel.send("f")
-
-        #Dad joke
-        if len(message.content.split()) == 2:
-                if message.content.split()[0].upper() == "IM":
-                        messageLength = len(message.content)
-                        returnMessage = message.content[3:messageLength]
-                        msg = "Hello " + returnMessage + ", I'm dad!"
-                        await message.channel.send(msg)
-
-                if message.content.split()[0].upper() == "I'M":
-                        messageLength = len(message.content)
-                        returnMessage = message.content[4:messageLength]
-                        msg = "Hello " + returnMessage + ", I'm dad!"
-                        await message.channel.send(msg)
 
         #League emotes
         #We need to make sure that the intended trigger is a word in itself, and not a substring in a different word
