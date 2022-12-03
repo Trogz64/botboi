@@ -18,7 +18,7 @@ TOKEN = data["token"]
 
 COMMAND_CHARACTER = "--"
 
-bot = commands.Bot(command_prefix=COMMAND_CHARACTER, help_command=None)
+bot = commands.Bot(command_prefix=COMMAND_CHARACTER, intents=discord.Intents.all(), help_command=None)
 
 logger = logging.getLogger("discord")
 logger.setLevel(logging.DEBUG)
