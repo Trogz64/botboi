@@ -1,11 +1,9 @@
 # BotBoi
 
-## Work In Progress
-
 Discord bot that goes by the name BotBoi.  
-Invite to your server using the link below, or use the code for your own bot!
+Invite to your server using the link below or use the code for your own bot!
 
-[Use this link to invite to a server](https://discordapp.com/api/oauth2/authorize?client_id=416406487024402432&permissions=523328&redirect_uri=https%3A%2F%2Fdiscordapp.com%2Fapi%2Foauth2%2Fauthorize%3Fclient_id%3D416406487024402432%26permissions%3D518208%26redirect_uri%3Dhttps%253A%252F%252Fdiscordapp.com%252Fapi%252Foauth2%252Fauthorize%253Fclient_&scope=bot)
+[Use this link to invite to a server](https://discord.com/api/oauth2/authorize?client_id=416406487024402432&permissions=414464863296&scope=applications.commands%20bot)
 
 ---
 
@@ -23,8 +21,8 @@ To create your own version of the bot you must create a config.json file in the 
 
 ## Dependencies
 
-* Requires [Python](https://www.python.org/) version 3.5.3 or higher
-* Requires [discord.py](https://github.com/Rapptz/discord.py/) version 1.0 or higher
+* Requires [Python](https://www.python.org/) version 3.8 or higher
+* Requires [discord.py](https://github.com/Rapptz/discord.py/) version 2.3.2 or higher
 
     ```sh
     # Linux/macOS
@@ -38,28 +36,27 @@ To create your own version of the bot you must create a config.json file in the 
 
 ## Features
 
-* --help
+Botboi has the following slash commands
 
 ### Greetings
 
-* --hellobotboi
-* --hellothere
-* --heyyy
+* `/hellobotboi`
+* `/hellothere`
 
 ### Commands
 
-* --chaostime
-* --wednesday
-* --goodbot
-* --badbot
-* --evaluate \<numbers\>
-* --birthday [@mention/multiple @mentions]
-* --servercount
-* --roll d[Number of faces]
-* --poll [Question]|[Option1]|[Option2]|...|[Option9]
-* --github
-* --invite
+* `/wednesday`
+* `/goodbot`
+* `/badbot`
+* `/evaluate [<numbers>]`
+* `/birthday [<member>]`
+* `/servercount`
+* `/roll <number_of_faces>`
+* `/poll <question> <option1> <option2> [<option3>] [<option4>] [<option5>] [<option6>] [<option7>] [<option8>] [<option9>]`
+* `/github`
+* `/invite`
+* `/eightball <question>`
 
 ### Other
 
-* BotBoi will reply with emotes or messages to certain words or phrases when used in a message
+* BotBoi will react with emotes or messages to certain words or phrases when used in a message

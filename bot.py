@@ -1,12 +1,10 @@
 import discord
-from discord.ext import commands
+from discord import app_commands
 import json
 import datetime
-import asyncio
 import logging
 import random
 import string
-import time
 import os
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -16,9 +14,12 @@ with open(os.path.join(__location__, 'config.json')) as config_file:
 
 TOKEN = data["token"]
 
-COMMAND_CHARACTER = "--"
+intents = discord.Intents.default()
+intents.message_content = True
 
-bot = commands.Bot(command_prefix=COMMAND_CHARACTER, intents=discord.Intents.all(), help_command=None)
+client = discord.Client(intents = intents)
+
+commandTree = discord.app_commands.CommandTree(client = client)
 
 logger = logging.getLogger("discord")
 logger.setLevel(logging.DEBUG)
@@ -26,88 +27,53 @@ handler =logging.FileHandler(filename=os.path.join(__location__, "BotBoiFiles/bo
 handler.setFormatter(logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s"))
 logger.addHandler(handler)
 
-@bot.event
+@client.event
 async def on_ready():
-        print("\nLogged in as {0.user}\n".format(bot))
-        await bot.change_presence(activity = discord.Activity(type = discord.ActivityType.listening, name = COMMAND_CHARACTER + "help"))
-        numberOfServers = len(bot.guilds)
+        print("\nLogged in as {0.user}\n".format(client))
+        await client.change_presence(activity = discord.Activity(type = discord.ActivityType.listening, name = "slash commands"))
+        await commandTree.sync()
+        numberOfServers = len(client.guilds)
         print("Connected to " + str(numberOfServers) + " servers")
         print("------\n")
 
-# Help command
-@bot.command()
-async def help(ctx, *args):
-        if len(args) > 0:
-                exists = False
-                for comm in bot.commands:
-                        if args[0] == comm.name:
-                                exists = True
-                                em = discord.Embed(title="\"" + comm.name + "\"" + " help", description=comm.help + "\n\nUsage: " + comm.usage, colour=0x800020)
-                                await ctx.send(embed=em)
-                if not exists:
-                        em = discord.Embed(descirption="Unknown command \"" + str(args[0] + "\""), colour=0x800020)
-                        await ctx.send(embed=em)
-        else:
-                em = discord.Embed(title="~BotBoi Help~", description="Try the following commands:\n" 
-                + COMMAND_CHARACTER + "hellobotboi\n" 
-                + COMMAND_CHARACTER + "hellothere\n" 
-                + COMMAND_CHARACTER + "heyyy\n" 
-                + COMMAND_CHARACTER + "wednesday\n" 
-                + COMMAND_CHARACTER + "goodbot\n" 
-                + COMMAND_CHARACTER + "badbot\n" 
-                + COMMAND_CHARACTER + "evaluate <numbers>\n" 
-                + COMMAND_CHARACTER + "birthday [@mention/multiple @mentions]\n" 
-                + COMMAND_CHARACTER + "servercount\n" 
-                + COMMAND_CHARACTER + "roll d[Number of faces]\n" 
-                + COMMAND_CHARACTER + "poll \"Question\" \"Option1\" \"Option2\" ... \"Option9\"\n"
-                + COMMAND_CHARACTER + "eightball \"Question\"\n"
-                + COMMAND_CHARACTER + "github\n"
-                + COMMAND_CHARACTER + "invite\n"
-                + "\n" + COMMAND_CHARACTER + "help [command] for more info about a command", colour=0x800020)
-                await ctx.send(embed=em)
-
 # Commands
-@bot.command(help="Botboi greets you!", usage=COMMAND_CHARACTER + "hellobotboi")
-async def hellobotboi(ctx):
-        await ctx.send("Hello {0.author.mention}".format(ctx))
+@commandTree.command(name="hellobotboi", description="Botboi greets you!")
+async def hellobotboi(interaction: discord.Interaction):
+        await interaction.response.send_message(f"Hello {interaction.user.mention}")
 
-@bot.command(help="You are a bold one!", usage=COMMAND_CHARACTER + "hellothere")
-async def hellothere(ctx):
-        await ctx.send("General Kenobi!")
-
-@bot.command(help="", usage=COMMAND_CHARACTER + "heyyy")
-async def heyyy(ctx):
-        await ctx.send("Queen Bee")
+@commandTree.command(name="hellothere", description="You are a bold one!")
+async def hellothere(interaction: discord.Interaction):
+        await interaction.response.send_message("General Kenobi!")
         
-@bot.command(help="Give this a try on a Wednesday...", usage=COMMAND_CHARACTER + "wednesday")
-async def wednesday(ctx):
+@commandTree.command(name="wednesday", description="Give this a try on a Wednesday...")
+async def wednesday(interaction: discord.Interaction):
         weekday = datetime.datetime.today().weekday()
         if weekday == 2:#monday=0 -> sunday=6
-                await ctx.send(file = discord.File(fp = os.path.join(__location__, 'BotBoiFiles/ITSWEDNESDAY.jpg'), filename = 'WednesdayFrog.jpg'))
+                await interaction.response.send_message(file = discord.File(fp = os.path.join(__location__, 'BotBoiFiles/ITSWEDNESDAY.jpg'), filename = 'WednesdayFrog.jpg'))
         else:
-                await ctx.send("It is not Wednesday...\nIt is " + getDayName(weekday) + " my dudes!")
+                await interaction.response.send_message("It is not Wednesday...\nIt is " + getDayName(weekday) + " my dudes!")
 
-@bot.command(help="Increments Botboi's good counter", usage=COMMAND_CHARACTER + "goodbot")
-async def goodbot(ctx):
-        await ctx.send(":blush:")
+@commandTree.command(name="goodbot", description="Increments Botboi's good counter.")
+async def goodbot(interaction: discord.Interaction):
+        await interaction.response.send_message(":blush:")
 
         #increment the good counter
         evaluateFilesExist()
         goodFile = os.path.join(__location__, "BotBoiFiles/goodFile.txt")
         readAndWriteToFile(goodFile)
 
-@bot.command(help="Increments Botboi's bad counter", usage=COMMAND_CHARACTER + "badbot")
-async def badbot(ctx):
-        await ctx.send(":sob:")
+@commandTree.command(name="badbot", description="Increments Botboi's bad counter.")
+async def badbot(interaction: discord.Interaction):
+        await interaction.response.send_message(":sob:")
 
         #increment the bad counter
         evaluateFilesExist()
         badFile = os.path.join(__location__, "BotBoiFiles/badFile.txt")
         readAndWriteToFile(badFile)
 
-@bot.command(help="Returns the results of using goodbot and badbot commands as a percentage.\n"
-        +"Include optional parameter 'number' to also return the exact numbers.", usage=COMMAND_CHARACTER + "evaluate <number>")
-async def evaluate(ctx, *args):
+@commandTree.command(name="evaluate", description="Returns the results of using goodbot and badbot commands.")
+@app_commands.describe(numbers="[Optional] Whether to include the exact numbers in the response.")
+async def evaluate(interaction: discord.Interaction, numbers: bool = False):
         evaluateFilesExist()
         goodFile = open(os.path.join(__location__, "BotBoiFiles/goodFile.txt"), "r")
         goodCount = int(goodFile.read())
@@ -115,92 +81,126 @@ async def evaluate(ctx, *args):
         badCount = int(badFile.read())
         percent = (goodCount / (float(goodCount + badCount))) * 100
         msgReturn = "The results show that I am " + str(round(percent, 2)) + "% good!"
-        if len(args) > 0:
-                if "NUMBER" in args[0].upper():
-                        msgReturn += "\nGood votes: " + str(goodCount) + "\nBad votes: " + str(badCount)
+        if numbers:
+                msgReturn += "\nGood votes: " + str(goodCount) + "\nBad votes: " + str(badCount)
         
         em = discord.Embed(title="Evaluation", description=msgReturn, colour=0x800020)
-        await ctx.send(embed=em)
+        await interaction.response.send_message(embed=em)
 
-@bot.command(help="Send your friends a Birthday message from Botboi.\n"
-        +"Mention your friend, mention all your friends, mention no one, or mention yourself!", usage=COMMAND_CHARACTER + "birthday @mention/multiple @mentions")
-async def birthday(ctx):
+@commandTree.command(name="birthday", description="Send a birthday message from Botboi.")
+@app_commands.describe(member="[Optional] User to mention")
+async def birthday(interaction: discord.Interaction, member: discord.Member = None):
         msg = "Happy Birthday"
-        mentionList = ctx.message.mentions
-        for x in range(len(mentionList)):
-                msg += " " + mentionList[x].mention
+        if member != None:
+                msg += " " + member.mention
         msg += "!\nhttp://i.imgur.com/P1vH64S.gif"
-        await ctx.send(msg)
+        await interaction.response.send_message(msg)
 
-@bot.command(help="Returns the number of servers that Botboi is currently connected to", usage=COMMAND_CHARACTER + "servercount")
-async def servercount(ctx):
-        em = discord.Embed(title="Server Count", description="Currently connected to " + str(len(bot.guilds)) + " servers!", colour=0x800020)
-        await ctx.send(embed=em)
+@commandTree.command(name="servercount", description="Returns the number of servers that Botboi is currently connected to.")
+async def servercount(interaction: discord.Interaction):
+        em = discord.Embed(title="Server Count", description="Currently connected to " + str(len(client.guilds)) + " servers!", colour=0x800020)
+        await interaction.response.send_message(embed=em)
 
-@bot.command(help="Rolls a die. You pick the number of sides (e.g. d6 = 6 sides, d20 = 20 sides, etc.)", usage=COMMAND_CHARACTER + "roll d[number of faces]")
-async def roll(ctx, arg1):
-        number = int(arg1.split("d")[1])
-        result = random.randint(1,number)
-        em = discord.Embed(title="", description="Rolled a d" + str(number) + "...\n\nThe result is: **" + str(result) + "**", colour=0x800020)
-        await ctx.send(embed=em)
+@commandTree.command(name="roll", description="Rolls a die.")
+@app_commands.describe(sides="The number of sides on the die.")
+async def roll(interaction: discord.Interaction, sides: int):
+        result = random.randint(1,sides)
+        em = discord.Embed(title="", description="Rolled a d" + str(sides) + "...\n\nThe result is: **" + str(result) + "**", colour=0x800020)
+        await interaction.response.send_message(embed=em)
 
-@bot.command(help="Create a poll for users to vote on.\nVote using the reactions added.\nYou can have up to nine (9) options in your poll.\n\n"
-        +"Surround your question and options in quotation marks, and separate them with a space", usage=COMMAND_CHARACTER + "poll \"Question\" \"Option1\" \"Option2\" ... \"Option9\"")
-async def poll(ctx, *args):
-        if len(args) >= 1:
-                question = args[0]
-                numOfOptions = len(args)-1
-                #check to see if enough options have been provided
-                if numOfOptions < 2:
-                        await ctx.send("Please provide at least two options for your poll")
-                        return
-                if numOfOptions > 9:
-                        await ctx.send("You have exceeded the maximum number of options (9)")
-                        return
-        else:
-                await ctx.send("Invalid syntax. Please provide a question and at least two options for your poll")
+@commandTree.command(name="poll", description="Create a poll for users to vote on.")
+@app_commands.describe(
+        question="Poll question.",
+        option1="Poll option 1.",
+        option2="Poll option 2.",
+        option3="[Optional] Poll option 3.",
+        option4="[Optional] Poll option 4.",
+        option5="[Optional] Poll option 5.",
+        option6="[Optional] Poll option 6.",
+        option7="[Optional] Poll option 7.",
+        option8="[Optional] Poll option 8.",
+        option9="[Optional] Poll option 9."
+)
+async def poll(interaction: discord.Interaction, question: str, option1: str, option2: str, option3: str = None, option4: str = None, option5: str = None, option6: str = None, option7: str = None, option8: str = None, option9: str = None):
+        if question == None or question == "":
+                await interaction.response.send_message("Please provide a question for your poll.")
                 return
-        optionsString = ""
-        for x in range(numOfOptions+1):
-                if x > 0:
-                        optionsString += getNumberEmote(x) + ": " + str(args[x]) + "\n"
+        if (option1 == None or option1 == "") or (option2 == None or option2 == ""):
+                await interaction.response.send_message("Please provide at least two options for your poll.")
+                return
+        optionsString = getNumberEmote(1) + ": " + option1 + "\n"
+        optionsString += getNumberEmote(2) + ": " + option2 + "\n"
+        optionsCount = 2
+        if (option3 != None and option3 != ""):
+                optionsCount += 1
+                optionsString += getNumberEmote(optionsCount) + ": " + option3 + "\n"
+        if (option4 != None and option4 != ""):
+                optionsCount += 1
+                optionsString += getNumberEmote(optionsCount) + ": " + option4 + "\n"
+        if (option5 != None and option5 != ""):
+                optionsCount += 1
+                optionsString += getNumberEmote(optionsCount) + ": " + option5 + "\n"
+        if (option6 != None and option6 != ""):
+                optionsCount += 1
+                optionsString += getNumberEmote(optionsCount) + ": " + option6 + "\n"
+        if (option7 != None and option7 != ""):
+                optionsCount += 1
+                optionsString += getNumberEmote(optionsCount) + ": " + option7 + "\n"
+        if (option8 != None and option8 != ""):
+                optionsCount += 1
+                optionsString += getNumberEmote(optionsCount) + ": " + option8 + "\n"
+        if (option9 != None and option9 != ""):
+                optionsCount += 1
+                optionsString += getNumberEmote(optionsCount) + ": " + option9 + "\n"
         
         em = discord.Embed(title=question, description=optionsString, colour=0x800020)
-        botMessage = await ctx.send(embed=em)
+        await interaction.response.send_message(embed=em)
+        botmessage = await interaction.original_response()
 
         # Add the reactions which users can vote with
-        for i in range(numOfOptions+1):
+        for i in range(optionsCount+1):
                 if i > 0:
-                        await botMessage.add_reaction(getNumberEmote(i))
+                     await botmessage.add_reaction(getNumberEmote(i))
 
-@bot.command(help="Ask the Magic 8-Ball a question", usage=COMMAND_CHARACTER + "eightball \"Question\"")
-async def eightball(ctx, *args):
-        if len(args) > 0:
-                question = args[0]
-        else:
-                await ctx.send("You need to ask the Magic 8-Ball a question.")
+@commandTree.command(name="eightball", description="Ask the Magic 8-Ball a question.")
+@app_commands.describe(question="Question to ask the Magic 8-Ball.")
+async def eightball(interaction: discord.Interaction, question: str):
+        if len(question) == 0:
+                await interaction.response.send_message("You need to ask the Magic 8-Ball a question.")
                 return
-        
         response = get8BallResponse(random.randint(1,20))
-        em = discord.Embed(title="", description="\U0001F3B1 " + response, colour=0x800020)
-        await ctx.send(embed=em)
+        em = discord.Embed(title="", description="\U0001F464 *" + question + "*\n\U0001F3B1 " + response, colour=0x800020)
+        await interaction.response.send_message(embed=em)
 
-@bot.command(help="Returns the link to the Botboi Github repository", usage=COMMAND_CHARACTER + "github")
-async def github(ctx):
-        em = discord.Embed(title="Botboi Github", description="https://github.com/Trogz64/botboi", colour=0x800020)
-        await ctx.send(embed=em)
+@commandTree.command(name="github", description="Returns the link to the Botboi Github repository.")
+async def github(interaction: discord.Interaction):
+        link: str = "https://github.com/Trogz64/botboi"
+        em = discord.Embed(title="Botboi Github", description=link, colour=0x800020)
+        await interaction.response.send_message(view=LinkButtons(link, em, "Visit GitHub"))
 
-@bot.command(help="Returns the link with which you can invite Botboi to your own server", usage=COMMAND_CHARACTER + "invite")
-async def invite(ctx):
-        em = discord.Embed(title="Botboi Invite Link", description="Use this link to invite me to your servers!\n"
-        + "https://discord.com/api/oauth2/authorize?client_id=416406487024402432&permissions=523328&redirect_uri=https%3A%2F%2Fdiscordapp.com%2Fapi%2Foauth2%2Fauthorize%3Fclient_id%3D416406487024402432%26permissions%3D518208%26redirect_uri%3Dhttps%253A%252F%252Fdiscordapp.com%252Fapi%252Foauth2%252Fauthorize%253Fclient_&scope=bot", colour=0x800020)
-        await ctx.send(embed=em)
+@commandTree.command(name="invite", description="Returns an invite link for Botboi.")
+async def invite(interaction: discord.Interaction):
+        inviteLink: str = "https://discord.com/api/oauth2/authorize?client_id=416406487024402432&permissions=414464863296&scope=applications.commands%20bot"
+        em = discord.Embed(title="Botboi Invite Link", description="Use this link to invite me to your servers!\n" + inviteLink, colour=0x800020)
+        await interaction.response.send_message(view=LinkButtons(inviteLink, em, "Add Botboi"))
+
+class LinkButtons(discord.ui.View):
+        def __init__(self, inv: str, em: discord.Embed, linkLabel: str):
+                super().__init__()
+                self.inv = inv
+                self.em = em
+                self.linkLabel = linkLabel
+                self.add_item(discord.ui.Button(label=self.linkLabel, url=self.inv))
+        
+        @discord.ui.button(label="View link", style=discord.ButtonStyle.blurple)
+        async def viewLinkBtn(self, interaction: discord.Interaction, button: discord.ui.Button):
+                await interaction.response.send_message(embed=self.em, ephemeral=True)
 
 
 # Reactions to messages
-@bot.listen('on_message')
-async def messageReactions(message):
-        # uncomment to stop the bot from reacting to itself
+@client.event
+async def on_message(message):
+        # Uncomment to stop the bot from reacting to itself. Currently handled under individual responses.
         # if message.author == client.user:
         #         return
 
@@ -208,7 +208,7 @@ async def messageReactions(message):
         if message.mention_everyone:
                 msg = "<:pingsock:522894414356414475>"
                 sent = False
-                for x in bot.emojis:
+                for x in client.emojis:
                         if x.name == "pingsock":        #adds the reaction if the emoji is found
                                 await message.add_reaction(x)
                                 sent = True
@@ -216,172 +216,162 @@ async def messageReactions(message):
                         await message.channel.send(msg)
 
         #Wave reaction to mention
-        if bot.user in message.mentions:
+        if client.user in message.mentions:
                 emoji = "\U0001F44B"
                 await message.add_reaction(emoji)
 
         #Special reactions
         if "ALEXA" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
-                if message.author == bot.user:
-                        return
-                playIndex = message.content.upper().find("PLAY")
-                if(playIndex > 0):
-                        msg = "**NOW PLAYING: **" + message.content[playIndex+5:len(message.content)] + " ~~-----~~o~~--------~~ :rewind: :pause_button: :fast_forward: 0:02/4:20"
-                else:
-                        msg = "I'm SoRrY, I dIdN't UnDeRsTaNd YoUr QuEsTiOn..."
-                await message.channel.send(msg)
+                if message.author != client.user:
+                        playIndex = message.content.upper().find("PLAY")
+                        if(playIndex > 0):
+                                msg = "**NOW PLAYING: **" + message.content[playIndex+5:len(message.content)] + " ~~-----~~o~~--------~~ :rewind: :pause_button: :fast_forward: 0:02/4:20"
+                        else:
+                                msg = "I'm SoRrY, I dIdN't UnDeRsTaNd YoUr QuEsTiOn..."
+                        await message.channel.send(msg)
 
         if message.content == "F":
-                if message.author == bot.user:
-                        return
-                await message.channel.send("F")
+                if message.author != client.user:
+                        await message.channel.send("F")
 
         if message.content == "f":
-                if message.author == bot.user:
-                        return
-                await message.channel.send("f")
+                if message.author != client.user:
+                        await message.channel.send("f")
 
         #League emotes
         #We need to make sure that the intended trigger is a word in itself, and not a substring in a different word
         if "BARD" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "BARDS" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
-                if message.author == bot.user:
-                        return
-                msg = "<:ootay:456893214880825354>"
-                sent = False
-                for x in bot.emojis:
-                        if x.name == "ootay":        #adds the reaction if the emoji is found
-                                await message.add_reaction(x)
-                                sent = True
-                if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
-                        await message.channel.send(msg)
+                if message.author != client.user:
+                        msg = "<:ootay:456893214880825354>"
+                        sent = False
+                        for x in client.emojis:
+                                if x.name == "ootay":        #adds the reaction if the emoji is found
+                                        await message.add_reaction(x)
+                                        sent = True
+                        if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
+                                await message.channel.send(msg)
 
         if "MEEP" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "MEEPS" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
-                if message.author == bot.user:
-                        return
-                msg = "<:meep:797893845819457567>"
-                sent = False
-                for x in bot.emojis:
-                        if x.name == "meep":        #adds the reaction if the emoji is found
-                                await message.add_reaction(x)
-                                sent = True
-                if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
-                        await message.channel.send(msg)
+                if message.author != client.user:
+                        msg = "<:meep:797893845819457567>"
+                        sent = False
+                        for x in client.emojis:
+                                if x.name == "meep":        #adds the reaction if the emoji is found
+                                        await message.add_reaction(x)
+                                        sent = True
+                        if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
+                                await message.channel.send(msg)
 
         if "BRAUM" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "BRAUMS" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
-                if message.author == bot.user:
-                        return
-                msg = "<:standbehindbraum:457164456846163969>"
-                sent = False
-                for x in bot.emojis:
-                        if x.name == "standbehindbraum":        #adds the reaction if the emoji is found
-                                await message.add_reaction(x)
-                                sent = True
-                if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
-                        await message.channel.send(msg)
+                if message.author != client.user:
+                        msg = "<:standbehindbraum:457164456846163969>"
+                        sent = False
+                        for x in client.emojis:
+                                if x.name == "standbehindbraum":        #adds the reaction if the emoji is found
+                                        await message.add_reaction(x)
+                                        sent = True
+                        if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
+                                await message.channel.send(msg)
 
         if "VEL" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "VELS" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "KOZ" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "KOZS" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "VELKOZ" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "VELKOZS" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
-                if message.author == bot.user:
-                        return
-                msg = "<:ohdarn:457162626313617438>"
-                sent = False
-                for x in bot.emojis:
-                        if x.name == "ohdarn":        #adds the reaction if the emoji is found
-                                await message.add_reaction(x)
-                                sent = True
-                if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
-                        await message.channel.send(msg)
+                if message.author != client.user:
+                        msg = "<:ohdarn:457162626313617438>"
+                        sent = False
+                        for x in client.emojis:
+                                if x.name == "ohdarn":        #adds the reaction if the emoji is found
+                                        await message.add_reaction(x)
+                                        sent = True
+                        if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
+                                await message.channel.send(msg)
 
         if "AHRI" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "AHRIS" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
-                if message.author == bot.user:
-                        return
-                msg = "<:ahri:457199789591887872>"
-                sent = False
-                for x in bot.emojis:
-                        if x.name == "ahri":        #adds the reaction if the emoji is found
-                                await message.add_reaction(x)
-                                sent = True
-                if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
-                        await message.channel.send(msg)
+                if message.author != client.user:
+                        msg = "<:ahri:457199789591887872>"
+                        sent = False
+                        for x in client.emojis:
+                                if x.name == "ahri":        #adds the reaction if the emoji is found
+                                        await message.add_reaction(x)
+                                        sent = True
+                        if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
+                                await message.channel.send(msg)
 
         if "SWAIN" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "SWAINS" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
-                if message.author == bot.user:
-                        return
-                msg = "<:swain:457212057683492864>"
-                sent = False
-                for x in bot.emojis:
-                        if x.name == "swain":        #adds the reaction if the emoji is found
-                                await message.add_reaction(x)
-                                sent = True
-                if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
-                        await message.channel.send(msg)
+                if message.author != client.user:
+                        msg = "<:swain:457212057683492864>"
+                        sent = False
+                        for x in client.emojis:
+                                if x.name == "swain":        #adds the reaction if the emoji is found
+                                        await message.add_reaction(x)
+                                        sent = True
+                        if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
+                                await message.channel.send(msg)
 
         if "PYKE" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "PYKES" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
-                if message.author == bot.user:
-                        return
-                msg = "<:pyke:458619798117548042>"
-                sent = False
-                for x in bot.emojis:
-                        if x.name == "pyke":        #adds the reaction if the emoji is found
-                                await message.add_reaction(x)
-                                sent = True
-                if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
-                        await message.channel.send(msg)
+                if message.author != client.user:
+                        msg = "<:pyke:458619798117548042>"
+                        sent = False
+                        for x in client.emojis:
+                                if x.name == "pyke":        #adds the reaction if the emoji is found
+                                        await message.add_reaction(x)
+                                        sent = True
+                        if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
+                                await message.channel.send(msg)
         
         if "YORICK" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "YORICKS" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
-                if message.author == bot.user:
-                        return
-                msg = "<:yorick:619544222068113408>"
-                sent = False
-                for x in bot.emojis:
-                        if x.name == "yorick":        #adds the reaction if the emoji is found
-                                await message.add_reaction(x)
-                                sent = True
-                if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
-                        await message.channel.send(msg)
+                if message.author != client.user:
+                        msg = "<:yorick:619544222068113408>"
+                        sent = False
+                        for x in client.emojis:
+                                if x.name == "yorick":        #adds the reaction if the emoji is found
+                                        await message.add_reaction(x)
+                                        sent = True
+                        if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
+                                await message.channel.send(msg)
 
         if "LUX" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "LUXS" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
-                if message.author == bot.user:
-                        return
-                msg = "<:lux:619545161604792320>"
-                sent = False
-                for x in bot.emojis:
-                        if x.name == "lux":        #adds the reaction if the emoji is found
-                                await message.add_reaction(x)
-                                sent = True
-                if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
-                        await message.channel.send(msg)
+                if message.author != client.user:
+                        msg = "<:lux:619545161604792320>"
+                        sent = False
+                        for x in client.emojis:
+                                if x.name == "lux":        #adds the reaction if the emoji is found
+                                        await message.add_reaction(x)
+                                        sent = True
+                        if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
+                                await message.channel.send(msg)
         
         if "NAMI" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split() or "NAMIS" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
-                if message.author == bot.user:
-                        return
-                msg = "<:nami:619545130566811661>"
-                sent = False
-                for x in bot.emojis:
-                        if x.name == "nami":        #adds the reaction if the emoji is found
-                                await message.add_reaction(x)
-                                sent = True
-                if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
-                        await message.channel.send(msg)
+                if message.author != client.user:
+                        msg = "<:nami:619545130566811661>"
+                        sent = False
+                        for x in client.emojis:
+                                if x.name == "nami":        #adds the reaction if the emoji is found
+                                        await message.add_reaction(x)
+                                        sent = True
+                        if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
+                                await message.channel.send(msg)
         
         if "KDA" in message.content.upper().translate(str.maketrans('', '', string.punctuation)).split():
-                if message.author == bot.user:
-                        return
-                msg = "<:KDA:771168104968486962>"
-                sent = False
-                for x in bot.emojis:
-                        if x.name == "KDA":        #adds the reaction if the emoji is found
-                                await message.add_reaction(x)
-                                sent = True
-                if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
-                        await message.channel.send(msg)
+                if message.author != client.user:
+                        msg = "<:KDA:771168104968486962>"
+                        sent = False
+                        for x in client.emojis:
+                                if x.name == "KDA":        #adds the reaction if the emoji is found
+                                        await message.add_reaction(x)
+                                        sent = True
+                        if sent != True:        #after the for, if it is not found then it will just send the emoji as a message instead
+                                await message.channel.send(msg)
 
         #Food related reactions
-        if "FOOD" in message.channel.name.upper() or "COOKING" in message.channel.name.upper():
-                if len(message.attachments) > 0:
-                        await message.add_reaction("\U0001F373")
-                        await message.add_reaction("\U0001F37D")
-                if "MEAT" in message.content.upper():
-                        await message.channel.send("https://media.giphy.com/media/w8g5zUCbH215kUjycc/giphy.gif")
+        #DMChannel does not have name attribute so these should not be checked 
+        if isinstance(message.channel, discord.DMChannel):
+                return
+        else:
+                if "FOOD" in message.channel.name.upper() or "COOKING" in message.channel.name.upper():
+                        if len(message.attachments) > 0:
+                                await message.add_reaction("\U0001F373")
+                                await message.add_reaction("\U0001F37D")
+                        if "MEAT" in message.content.upper():
+                                await message.channel.send("https://media.giphy.com/media/w8g5zUCbH215kUjycc/giphy.gif")
 
 #this is as close to a switch statement in python as possible. this uses dictionary mapping to return the name of the day from the number given by the date/time format
 def getDayName(dayNumber):
@@ -466,4 +456,4 @@ def readAndWriteToFile(myFile):
         except:
                 print("File read/write error")
 
-bot.run(TOKEN)
+client.run(TOKEN)
