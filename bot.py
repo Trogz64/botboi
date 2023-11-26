@@ -108,6 +108,17 @@ async def roll(interaction: discord.Interaction, sides: int):
         em = discord.Embed(title="", description="Rolled a d" + str(sides) + "...\n\nThe result is: **" + str(result) + "**", colour=0x800020)
         await interaction.response.send_message(embed=em)
 
+@commandTree.command(name="coinflip", description="Flip a coin.")
+async def coinflip(interaction: discord.Interaction):
+        result = random.randint(1,2)
+        resultString: str = ""
+        if result == 1:
+                resultString = "heads!"
+        else:
+                resultString = "tails!"
+        em = discord.Embed(title="", description="The result is: **" + resultString + "**", colour=0x800020)
+        await interaction.response.send_message(embed=em)
+
 @commandTree.command(name="poll", description="Create a poll for users to vote on.")
 @app_commands.describe(
         question="Poll question.",

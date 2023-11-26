@@ -56,6 +56,7 @@ Botboi has the following slash commands
 * `/github`
 * `/invite`
 * `/eightball <question>`
+* `/coinflip`
 
 ### Other
 
